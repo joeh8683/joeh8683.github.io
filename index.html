@@ -168,34 +168,34 @@
       }
     ];
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      tabsContainer.innerHTML = "";
-      plansContainer.innerHTML = "";
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  tabsContainer.innerHTML = "";
+  plansContainer.innerHTML = "";
 
-      sampleWeeks.forEach((week, i) => {
-        const tabBtn = document.createElement("button");
-        tabBtn.textContent = week.title;
-        tabBtn.classList.add(i === 0 ? "active" : "");
-        tabBtn.addEventListener("click", () => switchTab(i));
-        tabsContainer.appendChild(tabBtn);
+  sampleWeeks.forEach((week, i) => {
+    const tabBtn = document.createElement("button");
+    tabBtn.textContent = week.title;
+    if (i === 0) tabBtn.classList.add("active");
+    tabBtn.addEventListener("click", () => switchTab(i));
+    tabsContainer.appendChild(tabBtn);
 
-        const weekDiv = document.createElement("div");
-        weekDiv.classList.add("meal-plan");
-        if (i === 0) weekDiv.classList.add("active");
+    const weekDiv = document.createElement("div");
+    weekDiv.classList.add("meal-plan");
+    if (i === 0) weekDiv.classList.add("active");
 
-        week.meals.forEach(meal => {
-          const box = document.createElement("div");
-          box.className = "meal-box";
-          box.innerHTML = `<h4>${meal.title}</h4><ul>${meal.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
-          weekDiv.appendChild(box);
-        });
-
-        plansContainer.appendChild(weekDiv);
-      });
-
-      results.style.display = "block";
+    week.meals.forEach(meal => {
+      const box = document.createElement("div");
+      box.className = "meal-box";
+      box.innerHTML = `<h4>${meal.title}</h4><ul>${meal.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+      weekDiv.appendChild(box);
     });
+
+    plansContainer.appendChild(weekDiv);
+  });
+
+  results.style.display = "block";
+});
 
     function switchTab(index) {
       [...tabsContainer.children].forEach((btn, i) => {
