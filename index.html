@@ -212,9 +212,14 @@ form.addEventListener("submit", async (e) => {
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
 
-const days = mealText.split(/(?=Day\s+\d+:)/i);
+  const daySections = mealText.match(/Day\s+\d+:.*?(?=Day\s+\d+:|$)/gis);
 
-days.forEach((dayText, i) => {
+if (!daySections) {
+  alert("Could not parse meal plan. Please try again.");
+  return;
+}
+
+daySections.forEach((dayText, i) => {
   const tabBtn = document.createElement("button");
   tabBtn.textContent = `Day ${i + 1}`;
   tabBtn.className = "tab-button";
@@ -236,7 +241,6 @@ days.forEach((dayText, i) => {
   for (let j = 1; j < lines.length; j++) {
     const line = lines[j].trim();
 
-    // Detect start of a new meal (like Breakfast, Lunch, Snack, etc.)
     if (/^(breakfast|lunch|dinner|snack|meal \d+)/i.test(line)) {
       if (currentMeal) {
         html += `
@@ -253,7 +257,7 @@ days.forEach((dayText, i) => {
     }
   }
 
-  // Add last meal
+  // Add last meal box
   if (currentMeal) {
     html += `
       <div class="meal-box">
