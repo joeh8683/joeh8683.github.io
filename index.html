@@ -212,49 +212,61 @@ form.addEventListener("submit", async (e) => {
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
 
-const lines = dayText.trim().split('\n').filter(line => line.trim() !== '');
-const dayTitle = lines[0];
-let html = `<h3>${dayTitle}</h3>`;
+const days = mealText.split(/(?=Day\s+\d+:)/i);
 
-let currentMeal = "";
-let currentContent = [];
+days.forEach((dayText, i) => {
+  const tabBtn = document.createElement("button");
+  tabBtn.textContent = `Day ${i + 1}`;
+  tabBtn.className = "tab-button";
+  if (i === 0) tabBtn.classList.add("active");
+  tabBtn.addEventListener("click", () => switchTab(i));
+  tabsContainer.appendChild(tabBtn);
 
-for (let i = 1; i < lines.length; i++) {
-  const line = lines[i].trim();
+  const content = document.createElement("div");
+  content.className = "meal-plan";
+  if (i === 0) content.classList.add("active");
 
-  // Check if the line looks like a new meal title (e.g. "Breakfast", "Snack", "Lunch")
-  if (/^(breakfast|lunch|dinner|snack|meal \d+)/i.test(line)) {
-    // If we were collecting content for a previous meal, render it
-    if (currentMeal) {
-      html += `
-        <div class="meal-box">
-          <h4>${currentMeal}</h4>
-          <p>${currentContent.join('<br>')}</p>
-        </div>
-      `;
+  const lines = dayText.trim().split('\n').filter(line => line.trim() !== '');
+  const dayTitle = lines[0];
+  let html = `<h3>${dayTitle}</h3>`;
+
+  let currentMeal = "";
+  let currentContent = [];
+
+  for (let j = 1; j < lines.length; j++) {
+    const line = lines[j].trim();
+
+    // Detect start of a new meal (like Breakfast, Lunch, Snack, etc.)
+    if (/^(breakfast|lunch|dinner|snack|meal \d+)/i.test(line)) {
+      if (currentMeal) {
+        html += `
+          <div class="meal-box">
+            <h4>${currentMeal}</h4>
+            <p>${currentContent.join('<br>')}</p>
+          </div>
+        `;
+      }
+      currentMeal = line;
+      currentContent = [];
+    } else {
+      currentContent.push(line);
     }
-    // Start a new meal
-    currentMeal = line;
-    currentContent = [];
-  } else {
-    currentContent.push(line);
   }
-}
 
-// Add the final meal box if exists
-if (currentMeal) {
-  html += `
-    <div class="meal-box">
-      <h4>${currentMeal}</h4>
-      <p>${currentContent.join('<br>')}</p>
-    </div>
-  `;
-}
+  // Add last meal
+  if (currentMeal) {
+    html += `
+      <div class="meal-box">
+        <h4>${currentMeal}</h4>
+        <p>${currentContent.join('<br>')}</p>
+      </div>
+    `;
+  }
 
-content.innerHTML = html;
+  content.innerHTML = html;
+  plansContainer.appendChild(content);
+});
 
-      plansContainer.appendChild(content);
-    });
 
     results.style.display = "block";
   } catch (err) {
