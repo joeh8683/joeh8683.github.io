@@ -212,7 +212,7 @@ form.addEventListener("submit", async (e) => {
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
 
-  const daySections = mealText.match(/Day\s+\d+:.*?(?=Day\s+\d+:|$)/gis);
+const daySections = mealText.match(/Day\s+\d+:.*?(?=Day\s+\d+:|$)/gis);
 
 if (!daySections) {
   alert("Could not parse meal plan. Please try again.");
@@ -257,7 +257,7 @@ daySections.forEach((dayText, i) => {
     }
   }
 
-  // Add last meal box
+  // Final meal box
   if (currentMeal) {
     html += `
       <div class="meal-box">
@@ -270,6 +270,7 @@ daySections.forEach((dayText, i) => {
   content.innerHTML = html;
   plansContainer.appendChild(content);
 });
+
 
 
     results.style.display = "block";
