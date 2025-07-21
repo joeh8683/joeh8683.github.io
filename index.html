@@ -143,13 +143,18 @@ const tabsContainer = document.getElementById("tabs");
 const plansContainer = document.getElementById("plans");
 
 function switchTab(index) {
-  document.querySelectorAll(".tab-btn").forEach((btn, i) => {
+  const buttons = document.querySelectorAll(".tab-button");
+  const plans = document.querySelectorAll(".meal-plan");
+
+  buttons.forEach((btn, i) => {
     btn.classList.toggle("active", i === index);
   });
-  document.querySelectorAll(".meal-plan").forEach((plan, i) => {
+
+  plans.forEach((plan, i) => {
     plan.classList.toggle("active", i === index);
   });
 }
+
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -182,7 +187,7 @@ form.addEventListener("submit", async (e) => {
     days.forEach((dayText, i) => {
       const tabBtn = document.createElement("button");
       tabBtn.textContent = `Day ${i + 1}`;
-      tabBtn.className = "tab-btn";
+      tabBtn.className = "tab-button";
       if (i === 0) tabBtn.classList.add("active");
       tabBtn.addEventListener("click", () => switchTab(i));
       tabsContainer.appendChild(tabBtn);
