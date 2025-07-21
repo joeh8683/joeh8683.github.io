@@ -212,23 +212,47 @@ form.addEventListener("submit", async (e) => {
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
 
-      const dayLines = dayText.trim().split('\n').filter(line => line.trim() !== '');
-      const dayTitle = dayLines[0];
-      const meals = dayLines.slice(1);
+const lines = dayText.trim().split('\n').filter(line => line.trim() !== '');
+const dayTitle = lines[0];
+let html = `<h3>${dayTitle}</h3>`;
 
-      let html = `<h3>${dayTitle}</h3>`;
-      meals.forEach(meal => {
-        const [title, ...rest] = meal.split(':');
-        const mealName = title.trim();
-        const mealDesc = rest.join(':').trim();
-        html += `
-          <div class="meal-box">
-            <h4>${mealName}</h4>
-            <p>${mealDesc}</p>
-          </div>
+let currentMeal = "";
+let currentContent = [];
+
+for (let i = 1; i < lines.length; i++) {
+  const line = lines[i].trim();
+
+  // Check if the line looks like a new meal title (e.g. "Breakfast", "Snack", "Lunch")
+  if (/^(breakfast|lunch|dinner|snack|meal \d+)/i.test(line)) {
+    // If we were collecting content for a previous meal, render it
+    if (currentMeal) {
+      html += `
+        <div class="meal-box">
+          <h4>${currentMeal}</h4>
+          <p>${currentContent.join('<br>')}</p>
+        </div>
       `;
-      });
-      content.innerHTML = html;
+    }
+    // Start a new meal
+    currentMeal = line;
+    currentContent = [];
+  } else {
+    currentContent.push(line);
+  }
+}
+
+// Add the final meal box if exists
+if (currentMeal) {
+  html += `
+    <div class="meal-box">
+      <h4>${currentMeal}</h4>
+      <p>${currentContent.join('<br>')}</p>
+    </div>
+  `;
+}
+
+content.innerHTML = html;
+
       plansContainer.appendChild(content);
     });
 
