@@ -202,12 +202,17 @@ form.addEventListener("submit", async (e) => {
       const content = document.createElement("div");
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
-      const formattedDay = dayText.trim()
-  .replace(/^Day\s+\d+:/i, match => `<h3>${match}</h3>`)
+const formattedDay = dayText
+  .trim()
+  .replace(/^Day\s+\d+:/i, match => `<h3>${match}</h3>`)  // Highlight Day X
+  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')       // Convert **bold** to <strong>
+  .replace(/\|\|/g, '')                                   // Remove || markdown artifacts
+  .replace(/\|/g, '')                                     // Remove all single pipes
   .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<div class="meal-box"><h4>${match}</h4>`)
-  .replace(/\n\s*\n/g, '</div><br>');
+  .replace(/\n\s*\n/g, '</div><br>');                     // Close meal boxes on double newlines
 
-content.innerHTML = formattedDay + "</div>";
+content.innerHTML = formattedDay + "</div>"; // Close final box
+
 
       plansContainer.appendChild(content);
     });
