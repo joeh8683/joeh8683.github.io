@@ -57,6 +57,8 @@
       max-width: 900px;
       margin: 40px auto;
       padding: 20px;
+      background: #fdfdfd;
+      border-radius: 16px;
     }
     .tabs {
       display: flex;
@@ -88,10 +90,24 @@
     }
     .meal-box {
       border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      background: #fff;
+      transition: transform 0.2s;
+    }
+    
+    .meal-box:hover {
+      transform: scale(1.01);
+    }
+    
+    .meal-plan h3 {
+      color: #2980b9;
+      font-size: 1.4em;
       margin-bottom: 16px;
     }
+
     .meal-box h4 {
       margin-top: 0;
       color: #27ae60;
@@ -195,9 +211,26 @@ form.addEventListener("submit", async (e) => {
       const content = document.createElement("div");
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
-      content.innerHTML = `<pre>${dayText.trim()}</pre>`;
+
+      const dayLines = dayText.trim().split('\n').filter(line => line.trim() !== '');
+      const dayTitle = dayLines[0];
+      const meals = dayLines.slice(1);
+
+      let html = `<h3>${dayTitle}</h3>`;
+      meals.forEach(meal => {
+        const [title, ...rest] = meal.split(':');
+        const mealName = title.trim();
+        const mealDesc = rest.join(':').trim();
+        html += `
+          <div class="meal-box">
+            <h4>${mealName}</h4>
+            <p>${mealDesc}</p>
+          </div>
+      `;
+      });
+      content.innerHTML = html;
       plansContainer.appendChild(content);
-    });
+
 
     results.style.display = "block";
   } catch (err) {
