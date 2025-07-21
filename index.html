@@ -57,8 +57,6 @@
       max-width: 900px;
       margin: 40px auto;
       padding: 20px;
-      background: #fdfdfd;
-      border-radius: 16px;
     }
     .tabs {
       display: flex;
@@ -90,24 +88,10 @@
     }
     .meal-box {
       border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      background: #fff;
-      transition: transform 0.2s;
-    }
-    
-    .meal-box:hover {
-      transform: scale(1.01);
-    }
-    
-    .meal-plan h3 {
-      color: #2980b9;
-      font-size: 1.4em;
+      border-radius: 8px;
+      padding: 16px;
       margin-bottom: 16px;
     }
-
     .meal-box h4 {
       margin-top: 0;
       color: #27ae60;
@@ -153,21 +137,16 @@
   </section>
 
 <script>
-<script>
 const form = document.querySelector("form");
 const results = document.getElementById("results");
 const tabsContainer = document.getElementById("tabs");
 const plansContainer = document.getElementById("plans");
 
 function switchTab(index) {
-  const buttons = document.querySelectorAll(".tab-button");
-  const plans = document.querySelectorAll(".meal-plan");
-
-  buttons.forEach((btn, i) => {
+  document.querySelectorAll(".tab-btn").forEach((btn, i) => {
     btn.classList.toggle("active", i === index);
   });
-
-  plans.forEach((plan, i) => {
+  document.querySelectorAll(".meal-plan").forEach((plan, i) => {
     plan.classList.toggle("active", i === index);
   });
 }
@@ -189,26 +168,21 @@ form.addEventListener("submit", async (e) => {
     });
 
     const result = await response.json();
-
+    
     if (!result.plan) {
       console.error("No meal plan received:", result);
       alert("Failed to generate meal plan. Please check your inputs and try again.");
       return;
     }
-
+    
     const mealText = result.plan;
 
-    const daySections = mealText.match(/Day\s+\d+:.*?(?=Day\s+\d+:|$)/gis);
-
-    if (!daySections) {
-      alert("Could not parse meal plan. Please try again.");
-      return;
-    }
-
-    daySections.forEach((dayText, i) => {
+    // Convert GPT's text into daily tabs
+    const days = mealText.split(/(?=Day\s+\d+:)/i);
+    days.forEach((dayText, i) => {
       const tabBtn = document.createElement("button");
       tabBtn.textContent = `Day ${i + 1}`;
-      tabBtn.className = "tab-button";
+      tabBtn.className = "tab-btn";
       if (i === 0) tabBtn.classList.add("active");
       tabBtn.addEventListener("click", () => switchTab(i));
       tabsContainer.appendChild(tabBtn);
@@ -216,25 +190,7 @@ form.addEventListener("submit", async (e) => {
       const content = document.createElement("div");
       content.className = "meal-plan";
       if (i === 0) content.classList.add("active");
-
-      const lines = dayText.trim().split('\n').filter(line => line.trim() !== '');
-      const title = lines[0];
-      const meals = lines.slice(1);
-
-      let html = `<h3>${title}</h3>`;
-      meals.forEach((meal) => {
-        const [heading, ...rest] = meal.split(':');
-        const mealName = heading.trim();
-        const mealContent = rest.join(':').trim();
-        html += `
-          <div class="meal-box">
-            <h4>${mealName}</h4>
-            <p>${mealContent}</p>
-          </div>
-        `;
-      });
-
-      content.innerHTML = html;
+      content.innerHTML = `<pre>${dayText.trim()}</pre>`;
       plansContainer.appendChild(content);
     });
 
@@ -244,8 +200,6 @@ form.addEventListener("submit", async (e) => {
     alert("Failed to get meal plan. Please try again.");
   }
 });
-</script>
-
 </script>
 
 </body>
