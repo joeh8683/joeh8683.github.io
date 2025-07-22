@@ -189,37 +189,44 @@ form.addEventListener("submit", async (e) => {
     
     const mealText = result.plan;
 
-    // Convert GPT's text into daily tabs
-    const days = mealText.split(/(?=Day\s+\d+:)/i);
-    days.forEach((dayText, i) => {
-      const tabBtn = document.createElement("button");
-      tabBtn.textContent = `Day ${i + 1}`;
-      tabBtn.className = "tab-btn";
-      if (i === 0) tabBtn.classList.add("active");
-      tabBtn.addEventListener("click", () => switchTab(i));
-      tabsContainer.appendChild(tabBtn);
+// 1. Split all days from GPT response
+const days = mealText.split(/(?=Day\s+\d+:)/i);
 
-      const content = document.createElement("div");
-      content.className = "meal-plan";
-      if (i === 0) content.classList.add("active");
-const formattedDay = dayText
-  .trim()
-  .replace(/^Day\s+\d+:/i, match => `<h3>${match}</h3>`) // Large Day heading
-  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Convert bold markdown
-  .replace(/#{1,6}\s*(.*)/g, '<h4>$1</h4>')               // Convert ## to <h4>
-  .replace(/\n-\s*/g, '<br>• ')                           // Convert list bullets
-  .replace(/-\s*/g, '• ')                                 // Convert dashes
-  .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<h4>${match}</h4>`) // Format meals
-  .replace(/\n/g, '<br>');                                // Convert line breaks to <br>
+// 2. Group every 7 days into a "week"
+const weeks = [];
+for (let i = 0; i < days.length; i += 7) {
+  weeks.push(days.slice(i, i + 7));
+}
 
-// Wrap the whole day's content in one box
-content.innerHTML = `<div class="meal-box">${formattedDay}</div>`;
+// 3. Create tabs and week boxes
+weeks.forEach((weekDays, weekIndex) => {
+  const tabBtn = document.createElement("button");
+  tabBtn.textContent = `Week ${weekIndex + 1}`;
+  tabBtn.className = "tab-btn";
+  if (weekIndex === 0) tabBtn.classList.add("active");
+  tabBtn.addEventListener("click", () => switchTab(weekIndex));
+  tabsContainer.appendChild(tabBtn);
 
+  // Combine the week's days into one HTML block
+  const weekContent = weekDays.map((dayText) => {
+    return dayText
+      .trim()
+      .replace(/^Day\s+\d+:/i, match => `<h4>${match}</h4>`) // Smaller day headings
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Bold
+      .replace(/#{1,6}\s*(.*)/g, '<h5>$1</h5>')               // Markdown headings
+      .replace(/\n-\s*/g, '<br>• ')                           // List items
+      .replace(/-\s*/g, '• ')                                 // Bullets
+      .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<strong>${match}</strong>`)
+      .replace(/\n/g, '<br>');
+  }).join("<br><br>");
 
+  const content = document.createElement("div");
+  content.className = "meal-plan";
+  if (weekIndex === 0) content.classList.add("active");
+  content.innerHTML = `<div class="meal-box"><h3>Week ${weekIndex + 1}</h3>${weekContent}</div>`;
+  plansContainer.appendChild(content);
+});
 
-
-      plansContainer.appendChild(content);
-    });
 
     results.style.display = "block";
   } catch (err) {
