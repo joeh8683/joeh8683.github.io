@@ -204,14 +204,17 @@ form.addEventListener("submit", async (e) => {
       if (i === 0) content.classList.add("active");
 const formattedDay = dayText
   .trim()
-  .replace(/^Day\s+\d+:/i, match => `<h3>${match}</h3>`)  // Highlight Day X
-  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')       // Convert **bold** to <strong>
-  .replace(/\|\|/g, '')                                   // Remove || markdown artifacts
-  .replace(/\|/g, '')                                     // Remove all single pipes
-  .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<div class="meal-box"><h4>${match}</h4>`)
-  .replace(/\n\s*\n/g, '</div><br>');                     // Close meal boxes on double newlines
+  .replace(/^Day\s+\d+:/i, match => `<h3>${match}</h3>`) // Highlight day heading
+  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')       // Convert bold
+  .replace(/#{1,6}\s*(.*)/g, '<h4>$1</h4>')               // Convert Markdown headings
+  .replace(/\n-\s*/g, '<br>• ')                            // Convert - bullet points
+  .replace(/-\s*/g, '• ')                                  // Extra - cleanup
+  .replace(/\n\s*\n/g, '</div><div class="meal-box">')     // Split paragraphs into new meal-boxes
+  .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<h4>${match}</h4>`);
 
-content.innerHTML = formattedDay + "</div>"; // Close final box
+// Wrap entire content in one meal plan card
+content.innerHTML = `<div class="meal-box">${formattedDay}</div>`;
+
 
 
       plansContainer.appendChild(content);
