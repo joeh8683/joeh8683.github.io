@@ -139,6 +139,8 @@ const plansContainer = document.getElementById("plans");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  tabsContainer.innerHTML = "";
+  plansContainer.innerHTML = "";
 
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
