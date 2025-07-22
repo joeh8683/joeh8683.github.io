@@ -179,21 +179,21 @@ weeks.forEach((weekDays, weekIndex) => {
   const weekContent = weekDays.map((dayText) => {
     return dayText
       .trim()
-      .replace(/^Day\s+\d+:/i, match => `<h4>${match}</h4>`) // Smaller day headings
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Bold
-      .replace(/#{1,6}\s*(.*)/g, '<h5>$1</h5>')               // Markdown headings
-      .replace(/\n-\s*/g, '<br>• ')                           // List items
-      .replace(/-\s*/g, '• ')                                 // Bullets
+      .replace(/^Day\s+\d+:/i, match => `<h4>${match}</h4>`)
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/#{1,6}\s*(.*)/g, '<h5>$1</h5>')
+      .replace(/\n-\s*/g, '<br>• ')
+      .replace(/-\s*/g, '• ')
       .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<strong>${match}</strong>`)
       .replace(/\n/g, '<br>');
   }).join("<br><br>");
 
   const content = document.createElement("div");
   content.className = "meal-plan";
-  if (weekIndex === 0) content.classList.add("active");
   content.innerHTML = `<div class="meal-box"><h3>Week ${weekIndex + 1}</h3>${weekContent}</div>`;
   plansContainer.appendChild(content);
 });
+
 
 
     results.style.display = "block";
