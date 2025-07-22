@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +59,24 @@
       margin: 40px auto;
       padding: 20px;
     }
-
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tabs button {
+      padding: 10px 20px;
+      border: none;
+      background: #ecf0f1;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .tabs button.active {
+      background: #2980b9;
+      color: white;
+    }
     .meal-plan {
       display: none;
       background: white;
@@ -127,6 +145,7 @@
   </section>
 
   <section class="results" id="results" style="display:none">
+    <div class="tabs" id="tabs"></div>
     <div id="plans"></div>
   </section>
 
@@ -136,6 +155,14 @@ const results = document.getElementById("results");
 const tabsContainer = document.getElementById("tabs");
 const plansContainer = document.getElementById("plans");
 
+function switchTab(index) {
+  document.querySelectorAll(".tab-btn").forEach((btn, i) => {
+    btn.classList.toggle("active", i === index);
+  });
+  document.querySelectorAll(".meal-plan").forEach((plan, i) => {
+    plan.classList.toggle("active", i === index);
+  });
+}
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -174,26 +201,32 @@ for (let i = 0; i < days.length; i += 7) {
 
 // 3. Create tabs and week boxes
 weeks.forEach((weekDays, weekIndex) => {
+  const tabBtn = document.createElement("button");
+  tabBtn.textContent = `Week ${weekIndex + 1}`;
+  tabBtn.className = "tab-btn";
+  if (weekIndex === 0) tabBtn.classList.add("active");
+  tabBtn.addEventListener("click", () => switchTab(weekIndex));
+  tabsContainer.appendChild(tabBtn);
 
   // Combine the week's days into one HTML block
   const weekContent = weekDays.map((dayText) => {
     return dayText
       .trim()
-      .replace(/^Day\s+\d+:/i, match => `<h4>${match}</h4>`)
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/#{1,6}\s*(.*)/g, '<h5>$1</h5>')
-      .replace(/\n-\s*/g, '<br>• ')
-      .replace(/-\s*/g, '• ')
+      .replace(/^Day\s+\d+:/i, match => `<h4>${match}</h4>`) // Smaller day headings
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')      // Bold
+      .replace(/#{1,6}\s*(.*)/g, '<h5>$1</h5>')               // Markdown headings
+      .replace(/\n-\s*/g, '<br>• ')                           // List items
+      .replace(/-\s*/g, '• ')                                 // Bullets
       .replace(/(Breakfast|Lunch|Dinner|Snack[s]?)/gi, match => `<strong>${match}</strong>`)
       .replace(/\n/g, '<br>');
   }).join("<br><br>");
 
   const content = document.createElement("div");
   content.className = "meal-plan";
+  if (weekIndex === 0) content.classList.add("active");
   content.innerHTML = `<div class="meal-box"><h3>Week ${weekIndex + 1}</h3>${weekContent}</div>`;
   plansContainer.appendChild(content);
 });
-
 
 
     results.style.display = "block";
