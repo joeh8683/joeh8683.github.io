@@ -166,6 +166,10 @@ function switchTab(index) {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const submitBtn = form.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Generating...";
+
   tabsContainer.innerHTML = "";
   plansContainer.innerHTML = "";
 
@@ -233,7 +237,9 @@ weeks.forEach((weekDays, weekIndex) => {
   } catch (err) {
     console.error(err);
     alert("Failed to get meal plan. Please try again.");
-  }
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Generate My Meal Plan";
 });
 </script>
 
