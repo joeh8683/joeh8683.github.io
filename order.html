@@ -6,5 +6,19 @@
 <body>
   <h1>Order Your Meal Plan</h1>
   <p>Here you can select and purchase your personalized meal plan delivery.</p>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const summaryContainer = document.getElementById("plan-summary");
+    const summary = localStorage.getItem("mealPlanSummary");
+
+    if (summary && summaryContainer) {
+      summaryContainer.innerText = summary;
+    } else {
+      summaryContainer.innerText = "No summary available.";
+    }
+  });
+</script>
+
 </body>
 </html>
