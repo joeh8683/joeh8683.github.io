@@ -8,17 +8,40 @@
   <p>Here you can select and purchase your personalized meal plan delivery.</p>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const summaryContainer = document.getElementById("plan-summary");
-    const summary = localStorage.getItem("mealPlanSummary");
+  document.addEventListener("DOMContentLoaded", async () => {
+    const mealPlanText = localStorage.getItem("mealPlanText");
 
-    if (summary && summaryContainer) {
-      summaryContainer.innerText = summary;
-    } else {
-      summaryContainer.innerText = "No summary available.";
+    if (!mealPlanText) {
+      document.body.innerHTML = "<p>No meal plan found. Please generate one first.</p>";
+      return;
+    }
+
+    // Show loading while waiting for summary
+    const summaryContainer = document.createElement("div");
+    summaryContainer.textContent = "Generating your meal list...";
+    document.body.appendChild(summaryContainer);
+
+    // Send it to your backend for summarizing
+    try {
+      const response = await fetch("https://your-backend-url.com/summarise-meals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fullMealPlan: mealPlanText
+        })
+      });
+
+      const result = await response.json();
+      summaryContainer.innerHTML = `<h2>Meals you'll be ordering:</h2><p>${result.mealList}</p>`;
+    } catch (err) {
+      summaryContainer.textContent = "Failed to generate meal summary.";
+      console.error(err);
     }
   });
 </script>
+
 
 </body>
 </html>
