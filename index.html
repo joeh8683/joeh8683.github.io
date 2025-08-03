@@ -210,8 +210,6 @@ form.addEventListener("submit", async (e) => {
     }
     
     const mealText = result.plan;
-    localStorage.setItem("mealPlanText", mealText);
-
 
 // 1. Split all days from GPT response
 const days = mealText.split(/(?=Day\s+\d+:)/i);
@@ -265,5 +263,3 @@ weeks.forEach((weekDays, weekIndex) => {
 
 </body>
 </html>
-
-
