@@ -228,12 +228,6 @@ form.addEventListener("submit", (e) => {
   tabsContainer.innerHTML = "";
   plansContainer.innerHTML = "";
 
-  mealPlans.forEach((week, i) => {
-    const tabBtn = document.createElement("button");
-    tabBtn.textContent = week.title;
-    if (i === 0) tabBtn.classList.add("active");
-    tabBtn.addEventListener("click", () => switchTab(i));
-    tabsContainer.appendChild(tabBtn);
 
     const weekDiv = document.createElement("div");
     weekDiv.classList.add("meal-plan");
@@ -263,6 +257,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
