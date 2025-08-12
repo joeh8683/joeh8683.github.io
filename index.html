@@ -153,13 +153,13 @@
 
 const mealPlans = {
   loss: [
-    { title: "Week 1", meals: [
+    { title: "Day 1", meals: [
       { title: "Breakfast", items: ["Oatmeal", "Berries", "Almond milk"] },
       { title: "Lunch", items: ["Grilled chicken", "Steamed broccoli", "Brown rice"] },
       { title: "Dinner", items: ["Baked salmon", "Asparagus", "Sweet potato"] },
       { title: "Snacks", items: ["Carrot sticks", "Hummus"] }
     ]},
-    { title: "Week 2", meals: [
+    { title: "Day 2", meals: [
       { title: "Breakfast", items: ["Greek yogurt", "Granola", "Banana"] },
       { title: "Lunch", items: ["Turkey wrap", "Side salad"] },
       { title: "Dinner", items: ["Grilled cod", "Zucchini noodles"] },
@@ -167,7 +167,7 @@ const mealPlans = {
     ]}
   ],
   muscle: [
-    { title: "Week 1", meals: [
+    { title: "Day 1", meals: [
       { title: "Breakfast", items: ["Eggs", "Wholegrain toast", "Avocado"] },
       { title: "Lunch", items: ["Steak", "Quinoa", "Green beans"] },
       { title: "Dinner", items: ["Chicken breast", "Sweet potato", "Spinach"] },
@@ -175,7 +175,7 @@ const mealPlans = {
     ]}
   ],
   vegetarian: [
-    { title: "Week 1", meals: [
+    { title: "Day 1", meals: [
       { title: "Breakfast", items: ["Smoothie bowl", "Chia seeds"] },
       { title: "Lunch", items: ["Chickpea salad", "Wholegrain bread"] },
       { title: "Dinner", items: ["Vegetable stir-fry", "Tofu"] },
@@ -198,25 +198,25 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
-  days.forEach((week, i) => {
+  days.forEach((day, i) => {
     const tabBtn = document.createElement("button");
     tabBtn.textContent = day.title;
     if (i === 0) tabBtn.classList.add("active");
     tabBtn.addEventListener("click", () => switchTab(i));
     tabsContainer.appendChild(tabBtn);
 
-    const weekDiv = document.createElement("div");
-    weekDiv.classList.add("meal-plan");
-    if (i === 0) weekDiv.classList.add("active");
+    const dayDiv = document.createElement("div");
+    dayDiv.classList.add("meal-plan");
+    if (i === 0) dayDiv.classList.add("active");
 
-    week.meals.forEach(meal => {
+    day.meals.forEach(meal => {
       const box = document.createElement("div");
       box.className = "meal-box";
       box.innerHTML = `<h4>${meal.title}</h4><ul>${meal.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
-      weekDiv.appendChild(box);
+      dayDiv.appendChild(box);
     });
 
-    plansContainer.appendChild(weekDiv);
+    plansContainer.appendChild(dayDiv);
   });
 
   results.style.display = "block";
@@ -234,6 +234,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
