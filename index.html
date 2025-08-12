@@ -191,16 +191,16 @@ form.addEventListener("submit", (e) => {
   plansContainer.innerHTML = "";
 
   const chosenPlan = document.getElementById("plan").value;
-  const weeks = mealPlans[chosenPlan];
+  const days = mealPlans[chosenPlan];
 
-  if (!weeks) {
+  if (!days) {
     alert("Please select a meal plan.");
     return;
   }
 
-  weeks.forEach((week, i) => {
+  days.forEach((week, i) => {
     const tabBtn = document.createElement("button");
-    tabBtn.textContent = week.title;
+    tabBtn.textContent = day.title;
     if (i === 0) tabBtn.classList.add("active");
     tabBtn.addEventListener("click", () => switchTab(i));
     tabsContainer.appendChild(tabBtn);
@@ -234,6 +234,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
