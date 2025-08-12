@@ -153,36 +153,269 @@
 
 const mealPlans = {
   loss: [
-    { title: "Day 1", meals: [
-      { title: "Breakfast", items: ["Oatmeal", "Berries", "Almond milk"] },
-      { title: "Lunch", items: ["Grilled chicken", "Steamed broccoli", "Brown rice"] },
-      { title: "Dinner", items: ["Baked salmon", "Asparagus", "Sweet potato"] },
-      { title: "Snacks", items: ["Carrot sticks", "Hummus"] }
-    ]},
-    { title: "Day 2", meals: [
-      { title: "Breakfast", items: ["Greek yogurt", "Granola", "Banana"] },
-      { title: "Lunch", items: ["Turkey wrap", "Side salad"] },
-      { title: "Dinner", items: ["Grilled cod", "Zucchini noodles"] },
-      { title: "Snacks", items: ["Apple slices", "Almond butter"] }
-    ]}
+    {
+      title: "Day 1",
+      meals: [
+        { title: "Breakfast", items: ["Greek yogurt", "Chia seeds", "Berries", "Granola"] },
+        { title: "Snack", items: ["Hard-boiled egg", "Cucumber slices"] },
+        { title: "Lunch", items: ["Grilled chicken salad", "Mixed greens", "Cherry tomatoes", "Avocado", "Balsamic dressing"] },
+        { title: "Dinner", items: ["Baked cod", "Roasted Brussels sprouts", "Quinoa"] }
+      ]
+    },
+    {
+      title: "Day 2",
+      meals: [
+        { title: "Breakfast", items: ["Veggie omelet", "Egg whites", "Spinach", "Mushrooms", "Feta"] },
+        { title: "Snack", items: ["Apple", "Almond butter"] },
+        { title: "Lunch", items: ["Turkey & hummus wrap", "Whole wheat tortilla", "Lettuce", "Cucumber"] },
+        { title: "Dinner", items: ["Stir-fried shrimp", "Zucchini noodles", "Garlic sauce"] }
+      ]
+    },
+    {
+      title: "Day 3",
+      meals: [
+        { title: "Breakfast", items: ["Overnight oats", "Almond milk", "Flaxseeds", "Banana"] },
+        { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
+        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
+        { title: "Dinner", items: ["Grilled chicken", "Roasted sweet potatoes", "Steamed broccoli"] }
+      ]
+    },
+    {
+      title: "Day 4",
+      meals: [
+        { title: "Breakfast", items: ["Smoothie", "Spinach", "Protein powder", "Almond milk", "Frozen berries"] },
+        { title: "Snack", items: ["Walnuts", "Carrot sticks"] },
+        { title: "Lunch", items: ["Quinoa bowl", "Black beans", "Corn", "Avocado", "Lime dressing"] },
+        { title: "Dinner", items: ["Baked salmon", "Asparagus", "Wild rice"] }
+      ]
+    },
+    {
+      title: "Day 5",
+      meals: [
+        { title: "Breakfast", items: ["Scrambled eggs", "Smoked salmon", "Whole-grain toast"] },
+        { title: "Snack", items: ["Greek yogurt", "Honey", "Walnuts"] },
+        { title: "Lunch", items: ["Grilled turkey burger", "Side salad"] },
+        { title: "Dinner", items: ["Cauliflower rice stir-fry", "Tofu", "Sesame oil"] }
+      ]
+    },
+    {
+      title: "Day 6",
+      meals: [
+        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango"] },
+        { title: "Snack", items: ["Roasted chickpeas"] },
+        { title: "Lunch", items: ["Tuna salad", "Mixed greens", "Olives", "Boiled eggs", "Olive oil"] },
+        { title: "Dinner", items: ["Herb-roasted chicken", "Mashed cauliflower", "Green beans"] }
+      ]
+    },
+    {
+      title: "Day 7",
+      meals: [
+        { title: "Breakfast", items: ["Protein pancakes", "Oat flour", "Banana", "Egg whites"] },
+        { title: "Snack", items: ["Celery sticks", "Peanut butter"] },
+        { title: "Lunch", items: ["Grilled shrimp skewers", "Quinoa tabbouleh"] },
+        { title: "Dinner", items: ["Lean beef stir-fry", "Bell peppers", "Brown rice"] }
+      ]
+    }
   ],
+
   muscle: [
-    { title: "Day 1", meals: [
-      { title: "Breakfast", items: ["Eggs", "Wholegrain toast", "Avocado"] },
-      { title: "Lunch", items: ["Steak", "Quinoa", "Green beans"] },
-      { title: "Dinner", items: ["Chicken breast", "Sweet potato", "Spinach"] },
-      { title: "Snacks", items: ["Protein shake", "Nuts"] }
-    ]}
+    {
+      title: "Day 1",
+      meals: [
+        { title: "Breakfast", items: ["3-egg omelet", "Cheese", "Spinach", "Whole-grain toast"] },
+        { title: "Snack", items: ["Protein shake", "Banana", "Peanut butter", "Whey", "Milk"] },
+        { title: "Lunch", items: ["Grilled chicken breast", "Sweet potatoes", "Broccoli"] },
+        { title: "Dinner", items: ["Lean steak", "Mashed potatoes", "Sautéed mushrooms"] }
+      ]
+    },
+    {
+      title: "Day 2",
+      meals: [
+        { title: "Breakfast", items: ["Oatmeal", "Whey protein", "Almonds", "Honey"] },
+        { title: "Snack", items: ["Cottage cheese", "Blueberries"] },
+        { title: "Lunch", items: ["Beef & brown rice bowl", "Avocado"] },
+        { title: "Dinner", items: ["Baked salmon", "Quinoa", "Roasted carrots"] }
+      ]
+    },
+    {
+      title: "Day 3",
+      meals: [
+        { title: "Breakfast", items: ["Scrambled eggs", "Turkey sausage", "Whole-wheat toast"] },
+        { title: "Snack", items: ["Greek yogurt", "Granola"] },
+        { title: "Lunch", items: ["Grilled chicken wrap", "Whole wheat", "Hummus", "Veggies"] },
+        { title: "Dinner", items: ["Pork chops", "Roasted Brussels sprouts", "Wild rice"] }
+      ]
+    },
+    {
+      title: "Day 4",
+      meals: [
+        { title: "Breakfast", items: ["Protein smoothie", "Oats", "Peanut butter", "Banana", "Milk"] },
+        { title: "Snack", items: ["Hard-boiled eggs", "Almonds"] },
+        { title: "Lunch", items: ["Turkey chili", "Black beans", "Cornbread"] },
+        { title: "Dinner", items: ["Baked cod", "Garlic butter", "Roasted potatoes"] }
+      ]
+    },
+    {
+      title: "Day 5",
+      meals: [
+        { title: "Breakfast", items: ["Pancakes", "Protein powder", "Eggs", "Banana", "Syrup"] },
+        { title: "Snack", items: ["Tuna salad", "Whole-grain crackers"] },
+        { title: "Lunch", items: ["Grilled shrimp", "Couscous", "Asparagus"] },
+        { title: "Dinner", items: ["Chicken thighs", "Roasted squash", "Quinoa"] }
+      ]
+    },
+    {
+      title: "Day 6",
+      meals: [
+        { title: "Breakfast", items: ["Breakfast burrito", "Scrambled eggs", "Cheese", "Turkey bacon", "Whole wheat tortilla"] },
+        { title: "Snack", items: ["Protein bar", "Banana"] },
+        { title: "Lunch", items: ["Beef stir-fry", "Noodles", "Mixed veggies"] },
+        { title: "Dinner", items: ["Baked chicken", "Mashed sweet potatoes", "Green beans"] }
+      ]
+    },
+    {
+      title: "Day 7",
+      meals: [
+        { title: "Breakfast", items: ["Greek yogurt parfait", "Granola", "Berries", "Honey"] },
+        { title: "Snack", items: ["Peanut butter & jelly sandwich", "Whole grain"] },
+        { title: "Lunch", items: ["Grilled salmon", "Wild rice", "Steamed broccoli"] },
+        { title: "Dinner", items: ["Lean beef burger", "Whole wheat bun", "Sweet potato fries"] }
+      ]
+    }
   ],
+
   vegetarian: [
-    { title: "Day 1", meals: [
-      { title: "Breakfast", items: ["Smoothie bowl", "Chia seeds"] },
-      { title: "Lunch", items: ["Chickpea salad", "Wholegrain bread"] },
-      { title: "Dinner", items: ["Vegetable stir-fry", "Tofu"] },
-      { title: "Snacks", items: ["Trail mix", "Yogurt"] }
-    ]}
-  ]
-  // Add vegan, glutenfree, heart, lowcholesterol here...
+    {
+      title: "Day 1",
+      meals: [
+        { title: "Breakfast", items: ["Greek yogurt", "Honey", "Walnuts", "Berries"] },
+        { title: "Snack", items: ["Hummus", "Carrot sticks"] },
+        { title: "Lunch", items: ["Chickpea & spinach curry", "Brown rice"] },
+        { title: "Dinner", items: ["Stuffed bell peppers", "Quinoa", "Black beans", "Cheese"] }
+      ]
+    },
+    {
+      title: "Day 2",
+      meals: [
+        { title: "Breakfast", items: ["Scrambled tofu", "Avocado toast"] },
+        { title: "Snack", items: ["Almonds", "Dried apricots"] },
+        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
+        { title: "Dinner", items: ["Veggie stir-fry", "Tofu", "Sesame seeds"] }
+      ]
+    },
+    {
+      title: "Day 3",
+      meals: [
+        { title: "Breakfast", items: ["Oatmeal", "Chia seeds", "Almond butter", "Banana"] },
+        { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
+        { title: "Lunch", items: ["Falafel wrap", "Whole wheat", "Tahini", "Veggies"] },
+        { title: "Dinner", items: ["Eggplant Parmesan", "Side salad"] }
+      ]
+    },
+    {
+      title: "Day 4",
+      meals: [
+        { title: "Breakfast", items: ["Smoothie", "Spinach", "Banana", "Almond milk", "Flaxseeds"] },
+        { title: "Snack", items: ["Roasted edamame"] },
+        { title: "Lunch", items: ["Quinoa salad", "Cherry tomatoes", "Cucumber", "Feta"] },
+        { title: "Dinner", items: ["Mushroom risotto", "Peas"] }
+      ]
+    },
+    {
+      title: "Day 5",
+      meals: [
+        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango"] },
+        { title: "Snack", items: ["Apple", "Peanut butter"] },
+        { title: "Lunch", items: ["Black bean tacos", "Corn tortillas", "Avocado", "Salsa"] },
+        { title: "Dinner", items: ["Spinach & ricotta stuffed shells"] }
+      ]
+    },
+    {
+      title: "Day 6",
+      meals: [
+        { title: "Breakfast", items: ["Veggie omelet", "Mushrooms", "Peppers", "Cheese"] },
+        { title: "Snack", items: ["Trail mix", "Nuts", "Seeds", "Dark chocolate"] },
+        { title: "Lunch", items: ["Caprese salad", "Mozzarella", "Tomatoes", "Basil", "Balsamic"] },
+        { title: "Dinner", items: ["Sweet potato & black bean enchiladas"] }
+      ]
+    },
+    {
+      title: "Day 7",
+      meals: [
+        { title: "Breakfast", items: ["Whole-grain toast", "Avocado", "Poached eggs"] },
+        { title: "Snack", items: ["Greek yogurt", "Granola"] },
+        { title: "Lunch", items: ["Chickpea salad sandwich", "Whole wheat bread"] },
+        { title: "Dinner", items: ["Butternut squash risotto", "Parmesan"] }
+      ]
+    }
+  ],
+
+  vegan: [
+    {
+      title: "Day 1",
+      meals: [
+        { title: "Breakfast", items: ["Smoothie bowl", "Spinach", "Banana", "Almond butter", "Chia seeds", "Soy milk"] },
+        { title: "Snack", items: ["Roasted almonds"] },
+        { title: "Lunch", items: ["Buddha bowl", "Quinoa", "Roasted sweet potatoes", "Chickpeas", "Tahini dressing"] },
+        { title: "Dinner", items: ["Lentil Bolognese", "Whole-wheat pasta"] }
+      ]
+    },
+    {
+      title: "Day 2",
+      meals: [
+        { title: "Breakfast", items: ["Overnight oats", "Almond milk", "Flaxseeds", "Berries", "Maple syrup"] },
+        { title: "Snack", items: ["Apple slices", "Peanut butter"] },
+        { title: "Lunch", items: ["Chickpea salad wrap", "Whole wheat tortilla", "Avocado", "Greens"] },
+        { title: "Dinner", items: ["Coconut curry", "Tofu", "Spinach", "Brown rice"] }
+      ]
+    },
+    {
+      title: "Day 3",
+      meals: [
+        { title: "Breakfast", items: ["Tofu scramble", "Turmeric", "Black beans", "Avocado toast"] },
+        { title: "Snack", items: ["Dark chocolate", "Walnuts"] },
+        { title: "Lunch", items: ["Black bean & corn salad", "Lime dressing"] },
+        { title: "Dinner", items: ["Stuffed portobello mushrooms", "Quinoa", "Lentils", "Herbs"] }
+      ]
+    },
+    {
+      title: "Day 4",
+      meals: [
+        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango", "Hemp seeds"] },
+        { title: "Snack", items: ["Hummus", "Cucumber sticks", "Bell pepper sticks"] },
+        { title: "Lunch", items: ["Vegan sushi rolls", "Avocado", "Cucumber", "Carrot", "Brown rice"] },
+        { title: "Dinner", items: ["Spicy peanut tofu stir-fry", "Broccoli", "Rice noodles"] }
+      ]
+    },
+    {
+      title: "Day 5",
+      meals: [
+        { title: "Breakfast", items: ["Vegan pancakes", "Banana", "Oat flour", "Almond milk", "Berries"] },
+        { title: "Snack", items: ["Roasted edamame"] },
+        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
+        { title: "Dinner", items: ["Jackfruit tacos", "Corn tortillas", "Avocado", "Salsa"] }
+      ]
+    },
+    {
+      title: "Day 6",
+      meals: [
+        { title: "Breakfast", items: ["Granola", "Soy yogurt", "Mixed berries"] },
+        { title: "Snack", items: ["Trail mix", "Pumpkin seeds", "Dried cranberries", "Cacao nibs"] },
+        { title: "Lunch", items: ["Falafel plate", "Hummus", "Tabbouleh", "Pita"] },
+        { title: "Dinner", items: ["Eggplant & chickpea stew", "Couscous"] }
+      ]
+    },
+    {
+      title: "Day 7",
+      meals: [
+        { title: "Breakfast", items: ["Avocado toast", "Whole-grain bread", "Cherry tomatoes"] },
+        { title: "Snack", items: ["Banana", "Almond butter"] },
+        { title: "Lunch", items: ["Vegan tuna salad", "Mashed chickpeas", "Celery", "Vegan mayo"] },
+        { title: "Dinner", items: ["Butternut squash risotto", "Coconut milk", "Nutritional yeast"] }
+      ]
+    }
+  ],
+
 };
 
 form.addEventListener("submit", (e) => {
@@ -234,6 +467,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
