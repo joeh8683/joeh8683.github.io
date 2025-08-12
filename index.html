@@ -129,11 +129,11 @@
         <option value="">I want a...</option>
         <option value="loss">Weight Loss Meal Plan</option>
         <option value="muscle">Muscle Gain Meal Plan</option>
-        <option value="loss">Vegetarian Meal Plan</option>
-        <option value="loss">Vegan Meal Plan</option>
-        <option value="loss">Gluten-Free Meal Plan</option>
-        <option value="loss">Heart-Healthy Meal Plan</option>
-        <option value="loss">Low Cholestrol Meal Plan</option>
+        <option value="vegetarian">Vegetarian Meal Plan</option>
+        <option value="vegan">Vegan Meal Plan</option>
+        <option value="celiac">Gluten-Free Meal Plan</option>
+        <option value="heart">Heart-Healthy Meal Plan</option>
+        <option value="cholestrol">Low Cholestrol Meal Plan</option>
       </select>
       <button type="submit">Generate My Meal Plan!</button>
     </form>
@@ -150,35 +150,78 @@
     const plansContainer = document.getElementById("plans");
     const tabsContainer = document.getElementById("tabs");
 
-    const sampleWeeks = [
-      {
-        title: "Week 1",
-        meals: [
-          { title: "Energizing Breakfast", items: ["2 whole eggs", "1 slice toast", "1/2 avocado"] },
-          { title: "Power Lunch", items: ["150g chicken", "1 cup quinoa", "Steamed broccoli"] },
-          { title: "Balanced Dinner", items: ["150g salmon", "200g sweet potato", "Green salad"] },
-          { title: "Snacks", items: ["1 apple", "30g almonds"] }
-        ]
-      },
-      {
-        title: "Week 2",
-        meals: [
-          { title: "Protein Pancakes", items: ["3 egg whites", "1 banana", "1 tbsp peanut butter"] },
-          { title: "Lean Bowl", items: ["Grilled turkey", "Brown rice", "Mixed veggies"] },
-          { title: "Veggie Stir Fry", items: ["Tofu", "Broccoli", "Peppers"] },
-          { title: "Snacks", items: ["Greek yogurt", "1 orange"] }
-        ]
-      },
-      {
-        title: "Week 3",
-        meals: [
-          { title: "Morning Fuel", items: ["Protein shake", "Oats", "Chia seeds"] },
-          { title: "Wrap Lunch", items: ["Wholegrain wrap", "Chicken", "Spinach"] },
-          { title: "Pasta Dinner", items: ["Wholegrain pasta", "Tomato sauce", "Low-fat cheese"] },
-          { title: "Snacks", items: ["1 banana", "Boiled egg"] }
-        ]
-      }
-    ];
+
+const mealPlans = {
+  loss: [
+    { title: "Week 1", meals: [
+      { title: "Breakfast", items: ["Oatmeal", "Berries", "Almond milk"] },
+      { title: "Lunch", items: ["Grilled chicken", "Steamed broccoli", "Brown rice"] },
+      { title: "Dinner", items: ["Baked salmon", "Asparagus", "Sweet potato"] },
+      { title: "Snacks", items: ["Carrot sticks", "Hummus"] }
+    ]},
+    { title: "Week 2", meals: [
+      { title: "Breakfast", items: ["Greek yogurt", "Granola", "Banana"] },
+      { title: "Lunch", items: ["Turkey wrap", "Side salad"] },
+      { title: "Dinner", items: ["Grilled cod", "Zucchini noodles"] },
+      { title: "Snacks", items: ["Apple slices", "Almond butter"] }
+    ]}
+  ],
+  muscle: [
+    { title: "Week 1", meals: [
+      { title: "Breakfast", items: ["Eggs", "Wholegrain toast", "Avocado"] },
+      { title: "Lunch", items: ["Steak", "Quinoa", "Green beans"] },
+      { title: "Dinner", items: ["Chicken breast", "Sweet potato", "Spinach"] },
+      { title: "Snacks", items: ["Protein shake", "Nuts"] }
+    ]}
+  ],
+  vegetarian: [
+    { title: "Week 1", meals: [
+      { title: "Breakfast", items: ["Smoothie bowl", "Chia seeds"] },
+      { title: "Lunch", items: ["Chickpea salad", "Wholegrain bread"] },
+      { title: "Dinner", items: ["Vegetable stir-fry", "Tofu"] },
+      { title: "Snacks", items: ["Trail mix", "Yogurt"] }
+    ]}
+  ]
+  // Add vegan, glutenfree, heart, lowcholesterol here...
+};
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  tabsContainer.innerHTML = "";
+  plansContainer.innerHTML = "";
+
+  const chosenPlan = document.getElementById("plan").value;
+  const weeks = mealPlans[chosenPlan];
+
+  if (!weeks) {
+    alert("Please select a meal plan.");
+    return;
+  }
+
+  weeks.forEach((week, i) => {
+    const tabBtn = document.createElement("button");
+    tabBtn.textContent = week.title;
+    if (i === 0) tabBtn.classList.add("active");
+    tabBtn.addEventListener("click", () => switchTab(i));
+    tabsContainer.appendChild(tabBtn);
+
+    const weekDiv = document.createElement("div");
+    weekDiv.classList.add("meal-plan");
+    if (i === 0) weekDiv.classList.add("active");
+
+    week.meals.forEach(meal => {
+      const box = document.createElement("div");
+      box.className = "meal-box";
+      box.innerHTML = `<h4>${meal.title}</h4><ul>${meal.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+      weekDiv.appendChild(box);
+    });
+
+    plansContainer.appendChild(weekDiv);
+  });
+
+  results.style.display = "block";
+});
+
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -220,5 +263,6 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
