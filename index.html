@@ -101,7 +101,7 @@
 <body>
   <section class="hero">
     <h1>Your Personal Weight Journey</h1>
-    <p>Enter your weight and goals — we’ll build a full, multi-week meal plan with timing, macros, and structure.</p>
+    <p>Enter your weight and goals — we’ll build a full, one-week meal plan for you.</p>
   </section>
 
   <section class="form-section">
@@ -133,7 +133,6 @@
         <option value="vegan">Vegan Meal Plan</option>
         <option value="celiac">Gluten-Free Meal Plan</option>
         <option value="heart">Heart-Healthy Meal Plan</option>
-        <option value="cholestrol">Low Cholestrol Meal Plan</option>
       </select>
       <button type="submit">Generate My Meal Plan!</button>
     </form>
@@ -232,7 +231,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["3-egg omelet", "Cheese", "Spinach", "Whole-grain toast"] },
         { title: "Snack", items: ["Protein shake", "Banana", "Peanut butter", "Whey", "Milk"] },
         { title: "Lunch", items: ["Grilled chicken breast", "Sweet potatoes", "Broccoli"] },
-        { title: "Dinner", items: ["Lean steak", "Mashed potatoes", "Sautéed mushrooms"] }
+        { title: "Dinner", items: ["Lean steak", "Mashed potatoes", "Sautéed mushrooms"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1900 kcal", "Protein: ~150 g", "Fats: ~65 g"] }
       ]
     },
     {
@@ -241,7 +241,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Oatmeal", "Whey protein", "Almonds", "Honey"] },
         { title: "Snack", items: ["Cottage cheese", "Blueberries"] },
         { title: "Lunch", items: ["Beef & brown rice bowl", "Avocado"] },
-        { title: "Dinner", items: ["Baked salmon", "Quinoa", "Roasted carrots"] }
+        { title: "Dinner", items: ["Baked salmon", "Quinoa", "Roasted carrots"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1700 kcal", "Protein: ~124 g", "Fats: ~56 g"] }
       ]
     },
     {
@@ -250,7 +251,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Scrambled eggs", "Turkey sausage", "Whole-wheat toast"] },
         { title: "Snack", items: ["Greek yogurt", "Granola"] },
         { title: "Lunch", items: ["Grilled chicken wrap", "Whole wheat", "Hummus", "Veggies"] },
-        { title: "Dinner", items: ["Pork chops", "Roasted Brussels sprouts", "Wild rice"] }
+        { title: "Dinner", items: ["Pork chops", "Roasted Brussels sprouts", "Wild rice"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1650 kcal", "Protein: ~120 g", "Fats: ~59 g"] }
       ]
     },
     {
@@ -259,7 +261,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Protein smoothie", "Oats", "Peanut butter", "Banana", "Milk"] },
         { title: "Snack", items: ["Hard-boiled eggs", "Almonds"] },
         { title: "Lunch", items: ["Turkey chili", "Black beans", "Cornbread"] },
-        { title: "Dinner", items: ["Baked cod", "Garlic butter", "Roasted potatoes"] }
+        { title: "Dinner", items: ["Baked cod", "Garlic butter", "Roasted potatoes"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~129 g", "Fats: ~57 g"] }
       ]
     },
     {
@@ -268,7 +271,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Pancakes", "Protein powder", "Eggs", "Banana", "Syrup"] },
         { title: "Snack", items: ["Tuna salad", "Whole-grain crackers"] },
         { title: "Lunch", items: ["Grilled shrimp", "Couscous", "Asparagus"] },
-        { title: "Dinner", items: ["Chicken thighs", "Roasted squash", "Quinoa"] }
+        { title: "Dinner", items: ["Chicken thighs", "Roasted squash", "Quinoa"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1600 kcal", "Protein: ~132 g", "Fats: ~51 g"] }
       ]
     },
     {
@@ -277,7 +281,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Breakfast burrito", "Scrambled eggs", "Cheese", "Turkey bacon", "Whole wheat tortilla"] },
         { title: "Snack", items: ["Protein bar", "Banana"] },
         { title: "Lunch", items: ["Beef stir-fry", "Noodles", "Mixed veggies"] },
-        { title: "Dinner", items: ["Baked chicken", "Mashed sweet potatoes", "Green beans"] }
+        { title: "Dinner", items: ["Baked chicken", "Mashed sweet potatoes", "Green beans"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~132 g", "Fats: ~51 g"] }
       ]
     },
     {
@@ -286,7 +291,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Greek yogurt parfait", "Granola", "Berries", "Honey"] },
         { title: "Snack", items: ["Peanut butter & jelly sandwich", "Whole grain"] },
         { title: "Lunch", items: ["Grilled salmon", "Wild rice", "Steamed broccoli"] },
-        { title: "Dinner", items: ["Lean beef burger", "Whole wheat bun", "Sweet potato fries"] }
+        { title: "Dinner", items: ["Lean beef burger", "Whole wheat bun", "Sweet potato fries"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~120 g", "Fats: ~62 g"] }
       ]
     }
   ],
@@ -298,7 +304,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Greek yogurt", "Honey", "Walnuts", "Berries"] },
         { title: "Snack", items: ["Hummus", "Carrot sticks"] },
         { title: "Lunch", items: ["Chickpea & spinach curry", "Brown rice"] },
-        { title: "Dinner", items: ["Stuffed bell peppers", "Quinoa", "Black beans", "Cheese"] }
+        { title: "Dinner", items: ["Stuffed bell peppers", "Quinoa", "Black beans", "Cheese"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~63 g", "Fats: ~43 g"] }
       ]
     },
     {
@@ -307,7 +314,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Scrambled tofu", "Avocado toast"] },
         { title: "Snack", items: ["Almonds", "Dried apricots"] },
         { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
-        { title: "Dinner", items: ["Veggie stir-fry", "Tofu", "Sesame seeds"] }
+        { title: "Dinner", items: ["Veggie stir-fry", "Tofu", "Sesame seeds"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~71 g", "Fats: ~50 g"] }
       ]
     },
     {
@@ -316,7 +324,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Oatmeal", "Chia seeds", "Almond butter", "Banana"] },
         { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
         { title: "Lunch", items: ["Falafel wrap", "Whole wheat", "Tahini", "Veggies"] },
-        { title: "Dinner", items: ["Eggplant Parmesan", "Side salad"] }
+        { title: "Dinner", items: ["Eggplant Parmesan", "Side salad"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1500 kcal", "Protein: ~64 g", "Fats: ~46 g"] }
       ]
     },
     {
@@ -325,7 +334,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Smoothie", "Spinach", "Banana", "Almond milk", "Flaxseeds"] },
         { title: "Snack", items: ["Roasted edamame"] },
         { title: "Lunch", items: ["Quinoa salad", "Cherry tomatoes", "Cucumber", "Feta"] },
-        { title: "Dinner", items: ["Mushroom risotto", "Peas"] }
+        { title: "Dinner", items: ["Mushroom risotto", "Peas"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~57 g", "Fats: ~40 g"] }
       ]
     },
     {
@@ -334,7 +344,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango"] },
         { title: "Snack", items: ["Apple", "Peanut butter"] },
         { title: "Lunch", items: ["Black bean tacos", "Corn tortillas", "Avocado", "Salsa"] },
-        { title: "Dinner", items: ["Spinach & ricotta stuffed shells"] }
+        { title: "Dinner", items: ["Spinach & ricotta stuffed shells"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~47 g", "Fats: ~54 g"] }
       ]
     },
     {
@@ -343,7 +354,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Veggie omelet", "Mushrooms", "Peppers", "Cheese"] },
         { title: "Snack", items: ["Trail mix", "Nuts", "Seeds", "Dark chocolate"] },
         { title: "Lunch", items: ["Caprese salad", "Mozzarella", "Tomatoes", "Basil", "Balsamic"] },
-        { title: "Dinner", items: ["Sweet potato & black bean enchiladas"] }
+        { title: "Dinner", items: ["Sweet potato & black bean enchiladas"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~59 g", "Fats: ~56 g"] }
       ]
     },
     {
@@ -352,7 +364,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Whole-grain toast", "Avocado", "Poached eggs"] },
         { title: "Snack", items: ["Greek yogurt", "Granola"] },
         { title: "Lunch", items: ["Chickpea salad sandwich", "Whole wheat bread"] },
-        { title: "Dinner", items: ["Butternut squash risotto", "Parmesan"] }
+        { title: "Dinner", items: ["Butternut squash risotto", "Parmesan"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~60 g", "Fats: ~44 g"] }
       ]
     }
   ],
@@ -364,7 +377,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Smoothie bowl", "Spinach", "Banana", "Almond butter", "Chia seeds", "Soy milk"] },
         { title: "Snack", items: ["Roasted almonds"] },
         { title: "Lunch", items: ["Buddha bowl", "Quinoa", "Roasted sweet potatoes", "Chickpeas", "Tahini dressing"] },
-        { title: "Dinner", items: ["Lentil Bolognese", "Whole-wheat pasta"] }
+        { title: "Dinner", items: ["Lentil Bolognese", "Whole-wheat pasta"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1570 kcal", "Protein: ~60 g", "Fats: ~57 g"] }
       ]
     },
     {
@@ -373,7 +387,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Overnight oats", "Almond milk", "Flaxseeds", "Berries", "Maple syrup"] },
         { title: "Snack", items: ["Apple slices", "Peanut butter"] },
         { title: "Lunch", items: ["Chickpea salad wrap", "Whole wheat tortilla", "Avocado", "Greens"] },
-        { title: "Dinner", items: ["Coconut curry", "Tofu", "Spinach", "Brown rice"] }
+        { title: "Dinner", items: ["Coconut curry", "Tofu", "Spinach", "Brown rice"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1500 kcal", "Protein: ~52 g", "Fats: ~51 g"] }
       ]
     },
     {
@@ -382,7 +397,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Tofu scramble", "Turmeric", "Black beans", "Avocado toast"] },
         { title: "Snack", items: ["Dark chocolate", "Walnuts"] },
         { title: "Lunch", items: ["Black bean & corn salad", "Lime dressing"] },
-        { title: "Dinner", items: ["Stuffed portobello mushrooms", "Quinoa", "Lentils", "Herbs"] }
+        { title: "Dinner", items: ["Stuffed portobello mushrooms", "Quinoa", "Lentils", "Herbs"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~60 g", "Fats: ~52 g"] }
       ]
     },
     {
@@ -391,7 +407,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango", "Hemp seeds"] },
         { title: "Snack", items: ["Hummus", "Cucumber sticks", "Bell pepper sticks"] },
         { title: "Lunch", items: ["Vegan sushi rolls", "Avocado", "Cucumber", "Carrot", "Brown rice"] },
-        { title: "Dinner", items: ["Spicy peanut tofu stir-fry", "Broccoli", "Rice noodles"] }
+        { title: "Dinner", items: ["Spicy peanut tofu stir-fry", "Broccoli", "Rice noodles"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~45 g", "Fats: ~47 g"] }
       ]
     },
     {
@@ -400,7 +417,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Vegan pancakes", "Banana", "Oat flour", "Almond milk", "Berries"] },
         { title: "Snack", items: ["Roasted edamame"] },
         { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
-        { title: "Dinner", items: ["Jackfruit tacos", "Corn tortillas", "Avocado", "Salsa"] }
+        { title: "Dinner", items: ["Jackfruit tacos", "Corn tortillas", "Avocado", "Salsa"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1300 kcal", "Protein: ~51 g", "Fats: ~32 g"] }
       ]
     },
     {
@@ -409,7 +427,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Granola", "Soy yogurt", "Mixed berries"] },
         { title: "Snack", items: ["Trail mix", "Pumpkin seeds", "Dried cranberries", "Cacao nibs"] },
         { title: "Lunch", items: ["Falafel plate", "Hummus", "Tabbouleh", "Pita"] },
-        { title: "Dinner", items: ["Eggplant & chickpea stew", "Couscous"] }
+        { title: "Dinner", items: ["Eggplant & chickpea stew", "Couscous"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~53 g", "Fats: ~42 g"] }
       ]
     },
     {
@@ -418,7 +437,8 @@ const mealPlans = {
         { title: "Breakfast", items: ["Avocado toast", "Whole-grain bread", "Cherry tomatoes"] },
         { title: "Snack", items: ["Banana", "Almond butter"] },
         { title: "Lunch", items: ["Vegan tuna salad", "Mashed chickpeas", "Celery", "Vegan mayo"] },
-        { title: "Dinner", items: ["Butternut squash risotto", "Coconut milk", "Nutritional yeast"] }
+        { title: "Dinner", items: ["Butternut squash risotto", "Coconut milk", "Nutritional yeast"] },
+        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~40 g", "Fats: ~51 g"] }
       ]
     }
   ],
@@ -430,7 +450,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Scrambled eggs", "Sautéed spinach", "Gluten-free toast"] },
       { title: "Snack", items: ["Rice cakes", "Almond butter"] },
       { title: "Lunch", items: ["Grilled chicken", "Quinoa", "Roasted veggies"] },
-      { title: "Dinner", items: ["Baked salmon", "Mashed cauliflower", "Green beans"] }
+      { title: "Dinner", items: ["Baked salmon", "Mashed cauliflower", "Green beans"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1480 kcal", "Protein: ~105 g", "Fats: ~58 g"] }
     ]
   },
   {
@@ -439,7 +460,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Greek yogurt", "Gluten-free granola", "Berries"] },
       { title: "Snack", items: ["Hard-boiled eggs", "Olives"] },
       { title: "Lunch", items: ["Turkey lettuce wraps", "Ground turkey", "Avocado", "Salsa"] },
-      { title: "Dinner", items: ["Shrimp stir-fry", "Rice noodles", "Tamari sauce"] }
+      { title: "Dinner", items: ["Shrimp stir-fry", "Rice noodles", "Tamari sauce"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~103 g", "Fats: ~44 g"] }
     ]
   },
   {
@@ -448,7 +470,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Smoothie", "Almond milk", "Banana", "Peanut butter", "Chia seeds"] },
       { title: "Snack", items: ["Cheese slices", "Gluten-free crackers"] },
       { title: "Lunch", items: ["Stuffed bell peppers", "Ground beef", "Rice", "Tomatoes"] },
-      { title: "Dinner", items: ["Grilled cod", "Roasted potatoes", "Asparagus"] }
+      { title: "Dinner", items: ["Grilled cod", "Roasted potatoes", "Asparagus"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~92 g", "Fats: ~53 g"] }
     ]
   },
   {
@@ -457,7 +480,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Oatmeal (GF oats)", "Walnuts", "Honey"] },
       { title: "Snack", items: ["Apple", "Sunflower seed butter"] },
       { title: "Lunch", items: ["Quinoa salad", "Cucumber", "Cherry tomatoes", "Feta"] },
-      { title: "Dinner", items: ["Chicken fajitas", "Corn tortillas", "Peppers", "Onions"] }
+      { title: "Dinner", items: ["Chicken fajitas", "Corn tortillas", "Peppers", "Onions"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~71 g", "Fats: ~47 g"] }
     ]
   },
   {
@@ -466,7 +490,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Raspberries"] },
       { title: "Snack", items: ["Roasted chickpeas"] },
       { title: "Lunch", items: ["Tuna salad", "GF crackers", "Lettuce cups"] },
-      { title: "Dinner", items: ["Beef & broccoli stir-fry", "GF soy sauce"] }
+      { title: "Dinner", items: ["Beef & broccoli stir-fry", "GF soy sauce"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~91 g", "Fats: ~50 g"] }
     ]
   },
   {
@@ -475,7 +500,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["GF pancakes", "Almond flour", "Maple syrup"] },
       { title: "Snack", items: ["Mixed nuts", "Dried fruit"] },
       { title: "Lunch", items: ["Lentil soup", "GF bread"] },
-      { title: "Dinner", items: ["Herb-roasted chicken", "Sweet potato mash"] }
+      { title: "Dinner", items: ["Herb-roasted chicken", "Sweet potato mash"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~78 g", "Fats: ~47 g"] }
     ]
   },
   {
@@ -484,7 +510,8 @@ const mealPlans = {
       { title: "Breakfast", items: ["Veggie omelet", "Avocado"] },
       { title: "Snack", items: ["Greek yogurt", "Honey"] },
       { title: "Lunch", items: ["Grilled shrimp salad", "Mixed greens", "Olive oil dressing"] },
-      { title: "Dinner", items: ["Lamb chops", "Roasted carrots", "Quinoa"] }
+      { title: "Dinner", items: ["Lamb chops", "Roasted carrots", "Quinoa"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~105 g", "Fats: ~57 g"] }
     ]
   }
 ],
@@ -496,7 +523,8 @@ heart: [
       { title: "Breakfast", items: ["Oatmeal", "Walnuts", "Flaxseeds", "Blueberries"] },
       { title: "Snack", items: ["Sliced apple", "Almond butter"] },
       { title: "Lunch", items: ["Grilled salmon", "Quinoa", "Steamed asparagus"] },
-      { title: "Dinner", items: ["Turkey chili (low-sodium)", "Avocado"] }
+      { title: "Dinner", items: ["Turkey chili (low-sodium)", "Avocado"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1480 kcal", "Protein: ~106 g", "Fats: ~59 g"] }
     ]
   },
   {
@@ -505,7 +533,8 @@ heart: [
       { title: "Breakfast", items: ["Greek yogurt", "Chia seeds", "Strawberries"] },
       { title: "Snack", items: ["Unsalted almonds"] },
       { title: "Lunch", items: ["Spinach salad", "Grilled chicken", "Olive oil", "Lemon"] },
-      { title: "Dinner", items: ["Baked cod", "Roasted Brussels sprouts", "Wild rice"] }
+      { title: "Dinner", items: ["Baked cod", "Roasted Brussels sprouts", "Wild rice"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1240 kcal", "Protein: ~89 g", "Fats: ~58 g"] }
     ]
   },
   {
@@ -514,7 +543,8 @@ heart: [
       { title: "Breakfast", items: ["Avocado toast", "Whole-grain bread", "Cherry tomatoes"] },
       { title: "Snack", items: ["Carrot sticks", "Hummus"] },
       { title: "Lunch", items: ["Lentil soup", "Mixed greens"] },
-      { title: "Dinner", items: ["Grilled shrimp", "Zucchini noodles", "Pesto"] }
+      { title: "Dinner", items: ["Grilled shrimp", "Zucchini noodles", "Pesto"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1220 kcal", "Protein: ~91 g", "Fats: ~51 g"] }
     ]
   },
   {
@@ -523,7 +553,8 @@ heart: [
       { title: "Breakfast", items: ["Smoothie", "Kale", "Banana", "Almond milk", "Flaxseeds"] },
       { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
       { title: "Lunch", items: ["Tuna salad", "Olive oil", "Lemon", "Greens"] },
-      { title: "Dinner", items: ["Baked chicken", "Roasted sweet potatoes", "Green beans"] }
+      { title: "Dinner", items: ["Baked chicken", "Roasted sweet potatoes", "Green beans"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1260 kcal", "Protein: ~93 g", "Fats: ~58 g"] }
     ]
   },
   {
@@ -532,7 +563,8 @@ heart: [
       { title: "Breakfast", items: ["Scrambled eggs", "Sautéed mushrooms", "Whole-grain toast"] },
       { title: "Snack", items: ["Walnuts", "Dark chocolate (70%+)"] },
       { title: "Lunch", items: ["Quinoa bowl", "Black beans", "Avocado", "Lime"] },
-      { title: "Dinner", items: ["Grilled salmon", "Farro", "Steamed broccoli"] }
+      { title: "Dinner", items: ["Grilled salmon", "Farro", "Steamed broccoli"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~75 g", "Fats: ~59 g"] }
     ]
   },
   {
@@ -541,7 +573,8 @@ heart: [
       { title: "Breakfast", items: ["Chia pudding", "Almond milk", "Raspberries"] },
       { title: "Snack", items: ["Edamame with sea salt"] },
       { title: "Lunch", items: ["Grilled turkey burger (no bun)", "Side salad"] },
-      { title: "Dinner", items: ["Stir-fried tofu", "Brown rice", "Veggies"] }
+      { title: "Dinner", items: ["Stir-fried tofu", "Brown rice", "Veggies"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1220 kcal", "Protein: ~76 g", "Fats: ~50 g"] }
     ]
   },
   {
@@ -550,7 +583,8 @@ heart: [
       { title: "Breakfast", items: ["Whole-grain toast", "Peanut butter", "Banana"] },
       { title: "Snack", items: ["Greek yogurt", "Honey"] },
       { title: "Lunch", items: ["Sardines on whole-grain crackers", "Cucumber"] },
-      { title: "Dinner", items: ["Herb-roasted chicken", "Mashed cauliflower", "Kale"] }
+      { title: "Dinner", items: ["Herb-roasted chicken", "Mashed cauliflower", "Kale"] },
+      { title: "Nutritional Facts", items: ["Calories: ~1240 kcal", "Protein: ~79 g", "Fats: ~52 g"] }
     ]
   }
 ]
@@ -606,6 +640,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
