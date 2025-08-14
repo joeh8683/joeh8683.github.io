@@ -79,6 +79,7 @@ body {
 
 .form-section input, 
 .form-section select {
+  box-sizing: border-box;
   width: 100%;
   padding: 14px 16px;
   margin: 10px 0;
@@ -87,6 +88,16 @@ body {
   font-size: 1em;
   transition: 0.3s;
   background: #fafafa;
+  height: 50px; /* forces same height */
+}
+
+.form-section select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548a.75.75 0 011.06-.032L10 10.623l3.424-3.107a.75.75 0 111.028 1.092l-4 3.628a.75.75 0 01-1.028 0l-4-3.628a.75.75 0 01-.032-1.06z'/></svg>");
 }
 
 .form-section input:focus, 
@@ -750,6 +761,7 @@ form.addEventListener("submit", (e) => {
   </script>
 </body>
 </html>
+
 
 
 
