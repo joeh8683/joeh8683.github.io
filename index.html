@@ -168,7 +168,7 @@ function update(){
   var veGapEl=document.getElementById('ve-gap');
   veGapEl.textContent=(veGap>=0?'+':'')+fmtDollar(veGap);
   veGapEl.className='gap-val '+(veGap>=0?'pos':'neg');
-  document.getElementById('ve-mult').textContent=fmt(vePn/ve.P)+'×';
+  document.getElementById('ve-mult').textContent=(veSn/ve.S).toFixed(2)+'×';
 
   var maxN=Math.max(sg.n,ve.n);
   var labels=[];
