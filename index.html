@@ -195,7 +195,7 @@ function update(){
         {type:'line',label:'SG salary',data:sgSalArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
         {type:'line',label:'SG price',data:sgPArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y'},
         {type:'line',label:'VE salary',data:veSalArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
-        {type:'line',label:'VE price (log₁₀)',data:vePArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y2'}
+        {type:'line',label:'VE price',data:vePArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y2'}
       ]
     },
     options:{
@@ -206,7 +206,11 @@ function update(){
         legend:{display:false},
         tooltip:{
           callbacks:{
-            label:{
+            label:function(c){
+              if(c.dataset.label==='VE price (log₁₀)'){
+                return 'VE price: $'+fmt(Math.pow(10,c.raw));
+              }
+              return c.dataset.label+': $'+fmt(c.raw);
           }
         }
       },
