@@ -1,246 +1,233 @@
-import React, { useState, useMemo } from 'react';
-import { Trophy, Layers, Info, AlertCircle, Plus, Trash2, Hash } from 'lucide-react';
 
-const SUITS = ['♠', '♥', '♦', '♣'];
-const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+<h2 class="sr-only">Interactive model comparing salary growth against inflation using arithmetic and compound growth formulas</h2>
+<style>
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  .wrap{padding:1.5rem 0}
+  .section-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:1rem}
+  .formula-row{display:flex;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap}
+  .formula-pill{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 16px;font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1;min-width:160px;text-align:center}
+  .formula-pill sub,.formula-pill sup{font-size:10px}
+  .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-bottom:1.5rem}
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+  .card-head{display:flex;align-items:center;gap:8px;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .card-flag{font-size:18px}
+  .card-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+  .card-sub{font-size:11px;color:var(--color-text-tertiary)}
+  .ctrl{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .ctrl-label{font-size:12px;color:var(--color-text-secondary);width:110px;flex-shrink:0;line-height:1.3}
+  .ctrl input[type=range]{flex:1;min-width:0}
+  .ctrl-val{font-size:13px;font-weight:500;min-width:64px;text-align:right;color:var(--color-text-primary)}
+  .results{margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;gap:8px}
+  .res-row{display:flex;justify-content:space-between;align-items:center}
+  .res-label{font-size:12px;color:var(--color-text-secondary)}
+  .res-val{font-size:16px;font-weight:500;color:var(--color-text-primary)}
+  .gap-row{margin-top:6px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary);display:flex;justify-content:space-between;align-items:center}
+  .gap-label{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.08em}
+  .gap-val{font-size:14px;font-weight:500}
+  .pos{color:#1D9E75}
+  .neg{color:#D85A30}
+  .chart-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1.5rem}
+  .chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+  .legend{display:flex;gap:16px;flex-wrap:wrap}
+  .leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--color-text-secondary)}
+  .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .leg-dash{width:16px;height:2px;flex-shrink:0;border-top:2px dashed}
+  .insight-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+  .insight-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.85rem 1rem}
+  .insight-label{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+  .insight-val{font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .insight-sub{font-size:12px;color:var(--color-text-secondary)}
+</style>
 
-export default function App() {
-  const [holeCards, setHoleCards] = useState([
-    { rank: 'A', suit: '♥' },
-    { rank: 'K', suit: '♥' }
-  ]);
-  const [board, setBoard] = useState([
-    { rank: '2', suit: '♥' },
-    { rank: '7', suit: '♥' },
-    { rank: 'T', suit: '♣' }
-  ]);
+<div class="wrap">
+  <p class="section-label">Salary growth vs. inflation — interactive model</p>
 
-  // --- Probability Engine ---
-  const stats = useMemo(() => {
-    const allKnown = [...holeCards, ...board];
-    const seenStrings = allKnown.map(c => `${c.rank}${c.suit}`);
-    if (new Set(seenStrings).size !== seenStrings.length) {
-      return { error: "Duplicate cards detected in your selection." };
-    }
+  <div class="formula-row">
+    <div class="formula-pill">Price growth &nbsp; P<sub>n</sub> = P(1 + r)<sup>n</sup></div>
+    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S + (n − 1)d</div>
+  </div>
 
-    const n = 52 - allKnown.length; // Remaining unseen cards
-
-    // Helper: Count cards by rank and suit
-    const suitCounts = {};
-    const rankCounts = {};
-    const values = [];
-    allKnown.forEach(c => {
-      suitCounts[c.suit] = (suitCounts[c.suit] || 0) + 1;
-      rankCounts[c.rank] = (rankCounts[c.rank] || 0) + 1;
-      let v = RANKS.indexOf(c.rank) + 2;
-      values.push(v);
-    });
-
-    const uniqueValues = [...new Set(values)].sort((a, b) => a - b);
-
-    // 1. Flush Outs (9 if 4 of same suit)
-    const maxSuit = Math.max(...Object.values(suitCounts));
-    const flushOuts = maxSuit === 4 ? 9 : 0;
-
-    // 2. Straight Outs (Open ended: 8, Gutshot: 4)
-    let straightOuts = 0;
-    const checkStraight = (valArray) => {
-      let maxC = 0, currentC = 1;
-      for(let i=0; i<valArray.length-1; i++) {
-        if(valArray[i+1] === valArray[i] + 1) { currentC++; maxC = Math.max(maxC, currentC); }
-        else if(valArray[i+1] !== valArray[i]) { currentC = 1; }
-      }
-      return maxC >= 5;
-    };
-
-    // Simple check for missing cards to complete a straight
-    for (let r = 2; r <= 14; r++) {
-      if (values.includes(r)) continue;
-      const test = [...uniqueValues, r].sort((a, b) => a - b);
-      if (checkStraight(test)) straightOuts += 4;
-      // Handle Ace-low
-      if (r === 14) {
-        const testLow = [...uniqueValues, 1].sort((a, b) => a - b);
-        if (checkStraight(testLow)) straightOuts += 4;
-      }
-    }
-    // Cap straight outs at 8 for OESD (prevent double counting)
-    if (straightOuts > 8) straightOuts = 8;
-
-    // 3. Three of a Kind / Full House Outs
-    // If you have a pair, 2 cards of that rank remain
-    let setOuts = 0;
-    Object.values(rankCounts).forEach(count => {
-      if (count === 2) setOuts += 2;
-    });
-
-    const categories = [
-      { name: 'Flush', outs: flushOuts, color: 'text-blue-400' },
-      { name: 'Straight', outs: straightOuts, color: 'text-emerald-400' },
-      { name: 'Three of a Kind', outs: setOuts, color: 'text-purple-400' },
-      { name: 'Full House', outs: (setOuts > 0 && board.length >= 3) ? 4 : 0, color: 'text-orange-400' }
-    ];
-
-    const calcProb = (outs) => {
-      if (outs <= 0) return { turn: 0, river: 0 };
-      const turn = (outs / n) * 100;
-      // Probability by river: 1 - ( (non-outs/n) * (non-outs-1/n-1) )
-      const nonOuts = n - outs;
-      const river = (1 - (nonOuts / n) * (nonOuts - 1) / (n - 1)) * 100;
-      return { turn, river };
-    };
-
-    return { categories, n, calcProb, error: null };
-  }, [holeCards, board]);
-
-  const updateCard = (type, index, field, value) => {
-    if (type === 'hole') {
-      const next = [...holeCards];
-      next[index][field] = value;
-      setHoleCards(next);
-    } else {
-      const next = [...board];
-      next[index][field] = value;
-      setBoard(next);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 font-sans">
-      <div className="max-w-4xl mx-auto">
-        <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-black flex items-center gap-2">
-              <Layers className="text-blue-500" /> PROBABILITY ENGINE
-            </h1>
-            <p className="text-slate-500 text-sm">Combinatorial analysis of remaining cards</p>
-          </div>
-          <div className="flex gap-2">
-            <div className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl text-center">
-              <p className="text-[10px] text-slate-500 font-bold uppercase">Unseen</p>
-              <p className="text-xl font-black text-blue-400">{stats.error ? '--' : stats.n}</p>
-            </div>
-          </div>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Inputs Column */}
-          <div className="lg:col-span-4 space-y-8">
-            <section>
-              <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <Hash size={14}/> Hole Cards
-              </h2>
-              <div className="grid grid-cols-2 gap-3">
-                {holeCards.map((c, i) => (
-                  <CardPicker key={i} card={c} onChange={(f, v) => updateCard('hole', i, f, v)} />
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                  <Layers size={14}/> Community Board
-                </h2>
-                {board.length < 5 && (
-                  <button 
-                    onClick={() => setBoard([...board, { rank: '2', suit: '♠' }])}
-                    className="text-[10px] bg-blue-600 hover:bg-blue-500 px-2 py-1 rounded font-bold transition-colors"
-                  >
-                    + ADD
-                  </button>
-                )}
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {board.map((c, i) => (
-                  <div key={i} className="relative group">
-                    <CardPicker card={c} onChange={(f, v) => updateCard('board', i, f, v)} />
-                    {board.length > 3 && (
-                      <button 
-                        onClick={() => setBoard(board.filter((_, idx) => idx !== i))}
-                        className="absolute -top-1 -right-1 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <Trash2 size={10} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          {/* Calculations Column */}
-          <div className="lg:col-span-8">
-            {stats.error ? (
-              <div className="bg-red-500/10 border border-red-500/50 p-8 rounded-3xl text-red-400 flex flex-col items-center justify-center gap-4 h-full">
-                <AlertCircle size={48} />
-                <p className="font-bold text-xl">{stats.error}</p>
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                {stats.categories.map((cat, i) => {
-                  const p = stats.calcProb(cat.outs);
-                  return (
-                    <div key={i} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 transition-all hover:border-slate-700">
-                      <div className="flex justify-between items-start mb-6">
-                        <div>
-                          <h3 className={`text-xl font-black ${cat.color}`}>{cat.name}</h3>
-                          <p className="text-slate-500 text-xs font-bold uppercase">{cat.outs} Outs Available</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-slate-500 text-[10px] font-bold uppercase mb-1">By River</p>
-                          <div className="text-3xl font-black text-white">{p.river.toFixed(1)}%</div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-2">
-                            <span>Probability on Turn</span>
-                            <span>{p.turn.toFixed(1)}%</span>
-                          </div>
-                          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-500" style={{ width: `${p.turn}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <footer className="mt-12 p-6 bg-slate-900/50 rounded-2xl border border-slate-800 flex gap-4">
-          <Info className="text-slate-500 shrink-0" />
-          <div className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-wider space-y-2">
-            <p><strong>Turn Equation:</strong> Outs / {stats.n}</p>
-            <p><strong>River Equation:</strong> 1 - (({stats.n} - Outs) / {stats.n} * ({stats.n} - Outs - 1) / ({stats.n} - 1))</p>
-          </div>
-        </footer>
+  <div class="cols">
+    <div class="card" style="border-top:2px solid #1D9E75">
+      <div class="card-head">
+        <span class="card-flag">🇸🇬</span>
+        <div><div class="card-title">Singapore</div><div class="card-sub">Moderate inflation</div></div>
+      </div>
+      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="sg-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="sg-P-v">$1,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="sg-r" min="1" max="20" step="0.5" value="5"><span class="ctrl-val" id="sg-r-v">5%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="sg-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="sg-S-v">$4,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d ($)</span><input type="range" id="sg-d" min="0" max="2000" step="50" value="300"><span class="ctrl-val" id="sg-d-v">$300</span></div>
+      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="sg-n" min="1" max="30" step="1" value="10"><span class="ctrl-val" id="sg-n-v">10 yrs</span></div>
+      <div class="results">
+        <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="sg-pn">$1,629</span></div>
+        <div class="res-row"><span class="res-label">Salary after n years (S<sub>n</sub>)</span><span class="res-val" id="sg-sn">$6,700</span></div>
+        <div class="gap-row"><span class="gap-label">Real purchasing power</span><span class="gap-val" id="sg-gap">+$5,071</span></div>
       </div>
     </div>
-  );
+
+    <div class="card" style="border-top:2px solid #D85A30">
+      <div class="card-head">
+        <span class="card-flag">🇻🇪</span>
+        <div><div class="card-title">Venezuela</div><div class="card-sub">Hyperinflation scenario</div></div>
+      </div>
+      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="ve-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="ve-P-v">$1,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="ve-r" min="100" max="500000" step="1000" value="100000"><span class="ctrl-val" id="ve-r-v">100,000%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="ve-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="ve-S-v">$4,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d ($)</span><input type="range" id="ve-d" min="0" max="50000" step="500" value="5000"><span class="ctrl-val" id="ve-d-v">$5,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="ve-n" min="1" max="10" step="1" value="3"><span class="ctrl-val" id="ve-n-v">3 yrs</span></div>
+      <div class="results">
+        <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="ve-pn">—</span></div>
+        <div class="res-row"><span class="res-label">Salary after n years (S<sub>n</sub>)</span><span class="res-val" id="ve-sn">—</span></div>
+        <div class="gap-row"><span class="gap-label">Real purchasing power</span><span class="gap-val" id="ve-gap">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <p class="section-label" style="margin:0">Salary vs. price over time</p>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>SG salary</div>
+        <div class="leg-item"><div class="leg-dash" style="border-color:#1D9E75"></div>SG price</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#D85A30"></div>VE salary</div>
+        <div class="leg-item"><div class="leg-dash" style="border-color:#D85A30"></div>VE price (log)</div>
+      </div>
+    </div>
+    <canvas id="chart" height="200"></canvas>
+  </div>
+
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-label">SG — salary multiplier</div>
+      <div class="insight-val" id="sg-mult">—</div>
+      <div class="insight-sub">salary grows by this factor over n years</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-label">VE — price multiplier</div>
+      <div class="insight-val" id="ve-mult">—</div>
+      <div class="insight-sub">prices grow by this factor over n years</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+function fmt(n){
+  var a=Math.abs(n);
+  var s=n<0?'-':'';
+  if(a>=1e12)return s+(a/1e12).toFixed(2)+'T';
+  if(a>=1e9)return s+(a/1e9).toFixed(2)+'B';
+  if(a>=1e6)return s+(a/1e6).toFixed(2)+'M';
+  if(a>=1e3)return s+(a/1e3).toFixed(1)+'K';
+  return s+Math.round(a).toLocaleString();
+}
+function fmtDollar(n){return(n<0?'-$':'$')+fmt(Math.abs(n));}
+
+var chartInst=null;
+
+function vals(prefix){
+  return{
+    P:+document.getElementById(prefix+'-P').value,
+    r:+document.getElementById(prefix+'-r').value/100,
+    S:+document.getElementById(prefix+'-S').value,
+    d:+document.getElementById(prefix+'-d').value,
+    n:+document.getElementById(prefix+'-n').value
+  };
 }
 
-function CardPicker({ card, onChange }) {
-  return (
-    <div className="flex flex-col gap-2 bg-slate-900 p-3 rounded-2xl border border-slate-800">
-      <select 
-        value={card.rank} 
-        onChange={(e) => onChange('rank', e.target.value)}
-        className="bg-slate-800 text-white font-black rounded-lg p-2 text-sm appearance-none text-center cursor-pointer"
-      >
-        {RANKS.map(r => <option key={r} value={r}>{r}</option>)}
-      </select>
-      <select 
-        value={card.suit} 
-        onChange={(e) => onChange('suit', e.target.value)}
-        className={`bg-slate-800 text-xl rounded-lg p-2 appearance-none text-center cursor-pointer ${['♥', '♦'].includes(card.suit) ? 'text-red-500' : 'text-slate-300'}`}
-      >
-        {SUITS.map(s => <option key={s} value={s}>{s}</option>)}
-      </select>
-    </div>
-  );
+function update(){
+  var sg=vals('sg'), ve=vals('ve');
+
+  document.getElementById('sg-P-v').textContent='$'+sg.P.toLocaleString();
+  document.getElementById('sg-r-v').textContent=(+document.getElementById('sg-r').value)+'%';
+  document.getElementById('sg-S-v').textContent='$'+sg.S.toLocaleString();
+  document.getElementById('sg-d-v').textContent='$'+sg.d.toLocaleString();
+  document.getElementById('sg-n-v').textContent=sg.n+' yrs';
+
+  document.getElementById('ve-P-v').textContent='$'+ve.P.toLocaleString();
+  document.getElementById('ve-r-v').textContent=(+document.getElementById('ve-r').value).toLocaleString()+'%';
+  document.getElementById('ve-S-v').textContent='$'+ve.S.toLocaleString();
+  document.getElementById('ve-d-v').textContent='$'+ve.d.toLocaleString();
+  document.getElementById('ve-n-v').textContent=ve.n+' yrs';
+
+  var sgPn=sg.P*Math.pow(1+sg.r,sg.n);
+  var sgSn=sg.S+(sg.n-1)*sg.d;
+  var sgGap=sgSn-sgPn;
+  document.getElementById('sg-pn').textContent=fmtDollar(sgPn);
+  document.getElementById('sg-sn').textContent=fmtDollar(sgSn);
+  var sgGapEl=document.getElementById('sg-gap');
+  sgGapEl.textContent=(sgGap>=0?'+':'')+fmtDollar(sgGap);
+  sgGapEl.className='gap-val '+(sgGap>=0?'pos':'neg');
+  document.getElementById('sg-mult').textContent=(sgSn/sg.S).toFixed(2)+'×';
+
+  var vePn=ve.P*Math.pow(1+ve.r,ve.n);
+  var veSn=ve.S+(ve.n-1)*ve.d;
+  var veGap=veSn-vePn;
+  document.getElementById('ve-pn').textContent=fmtDollar(vePn);
+  document.getElementById('ve-sn').textContent=fmtDollar(veSn);
+  var veGapEl=document.getElementById('ve-gap');
+  veGapEl.textContent=(veGap>=0?'+':'')+fmtDollar(veGap);
+  veGapEl.className='gap-val '+(veGap>=0?'pos':'neg');
+  document.getElementById('ve-mult').textContent=fmt(vePn/ve.P)+'×';
+
+  var maxN=Math.max(sg.n,ve.n);
+  var labels=[];
+  for(var i=0;i<=maxN;i++) labels.push('Yr '+i);
+
+  var sgSalArr=[],sgPArr=[],veSalArr=[],vePArr=[];
+  for(var i=0;i<=maxN;i++){
+    sgSalArr.push(i<=sg.n ? sg.S+i*sg.d : null);
+    sgPArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
+    veSalArr.push(i<=ve.n ? ve.S+i*ve.d : null);
+    var rawVeP=ve.P*Math.pow(1+ve.r,i);
+    vePArr.push(i<=ve.n ? Math.log10(Math.max(1,rawVeP)) : null);
+  }
+
+  var isDark=getComputedStyle(document.documentElement).getPropertyValue('color-scheme').includes('dark');
+  var gridColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
+  var tickColor=isDark?'rgba(255,255,255,0.35)':'rgba(0,0,0,0.35)';
+
+  var ctx=document.getElementById('chart').getContext('2d');
+  if(chartInst) chartInst.destroy();
+  chartInst=new Chart(ctx,{
+    data:{
+      labels:labels,
+      datasets:[
+        {type:'line',label:'SG salary',data:sgSalArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
+        {type:'line',label:'SG price',data:sgPArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y'},
+        {type:'line',label:'VE salary',data:veSalArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
+        {type:'line',label:'VE price (log₁₀)',data:vePArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y2'}
+      ]
+    },
+    options:{
+      animation:false,
+      responsive:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label:function(c){
+              if(c.dataset.label==='VE price (log₁₀)'){
+                return 'VE price: $'+fmt(Math.pow(10,c.raw));
+              }
+              return c.dataset.label+': $'+fmt(c.raw);
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ticks:{color:tickColor,font:{size:11}},grid:{color:gridColor}},
+        y:{position:'left',ticks:{color:'#1D9E75',font:{size:11},callback:function(v){return '$'+fmt(v);}},grid:{color:gridColor},title:{display:true,text:'$ value (SG)',color:tickColor,font:{size:10}}},
+        y2:{position:'right',ticks:{color:'#D85A30',font:{size:11},callback:function(v){return 'log₁₀ '+v.toFixed(0);}},grid:{drawOnChartArea:false},title:{display:true,text:'VE price (log scale)',color:tickColor,font:{size:10}}}
+      }
+    }
+  });
 }
+
+['sg-P','sg-r','sg-S','sg-d','sg-n','ve-P','ve-r','ve-S','ve-d','ve-n'].forEach(function(id){
+  document.getElementById(id).addEventListener('input',update);
+});
+update();
+</script>
