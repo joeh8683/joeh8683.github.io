@@ -90,7 +90,7 @@
         <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>SG salary</div>
         <div class="leg-item"><div class="leg-dash" style="border-color:#1D9E75"></div>SG price</div>
         <div class="leg-item"><div class="leg-dot" style="background:#D85A30"></div>VE salary</div>
-        <div class="leg-item"><div class="leg-dash" style="border-color:#D85A30"></div>VE price</div>
+        <div class="leg-item"><div class="leg-dash" style="border-color:#D85A30"></div>VE price (log)</div>
       </div>
     </div>
     <canvas id="chart" height="200"></canvas>
@@ -195,7 +195,7 @@ function update(){
         {type:'line',label:'SG salary',data:sgSalArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
         {type:'line',label:'SG price',data:sgPArr,borderColor:'#1D9E75',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y'},
         {type:'line',label:'VE salary',data:veSalArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:2,yAxisID:'y'},
-        {type:'line',label:'VE price',data:vePArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y2'}
+        {type:'line',label:'VE price (log₁₀)',data:vePArr,borderColor:'#D85A30',backgroundColor:'transparent',tension:0.3,pointRadius:2,borderWidth:1.5,borderDash:[5,4],yAxisID:'y2'}
       ]
     },
     options:{
@@ -204,9 +204,22 @@ function update(){
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label:function(c){
+              if(c.dataset.label==='VE price (log₁₀)'){
+                return 'VE price: $'+fmt(Math.pow(10,c.raw));
+              }
+              return c.dataset.label+': $'+fmt(c.raw);
+            }
+          }
+        }
+      },
       scales:{
         x:{ticks:{color:tickColor,font:{size:11}},grid:{color:gridColor}},
         y:{position:'left',ticks:{color:'#1D9E75',font:{size:11},callback:function(v){return '$'+fmt(v);}},grid:{color:gridColor},title:{display:true,text:'$ value (SG)',color:tickColor,font:{size:10}}},
+       
+      }
     }
   });
 }
