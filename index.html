@@ -44,7 +44,7 @@
 
   <div class="formula-row">
     <div class="formula-pill">Price growth &nbsp; P<sub>n</sub> = P(1 + r)<sup>n</sup></div>
-    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S (1 + r)d</div>
+    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S(1 + r)</div>
   </div>
 
   <div class="cols">
@@ -141,13 +141,13 @@ function update(){
   document.getElementById('sg-P-v').textContent='$'+sg.P.toLocaleString();
   document.getElementById('sg-r-v').textContent=(+document.getElementById('sg-r').value)+'%';
   document.getElementById('sg-S-v').textContent='$'+sg.S.toLocaleString();
-  document.getElementById('sg-d-v').textContent='$'+sg.d.toLocaleString();
+  document.getElementById('sg-d-v').textContent='%'+sg.d.toLocaleString();
   document.getElementById('sg-n-v').textContent=sg.n+' yrs';
 
   document.getElementById('ve-P-v').textContent='$'+ve.P.toLocaleString();
   document.getElementById('ve-r-v').textContent=(+document.getElementById('ve-r').value).toLocaleString()+'%';
   document.getElementById('ve-S-v').textContent='$'+ve.S.toLocaleString();
-  document.getElementById('ve-d-v').textContent='$'+ve.d.toLocaleString();
+  document.getElementById('ve-d-v').textContent='%'+ve.d.toLocaleString();
   document.getElementById('ve-n-v').textContent=ve.n+' yrs';
 
   var sgPn=sg.P*Math.pow(1+sg.r,sg.n);
