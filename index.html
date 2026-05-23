@@ -179,7 +179,7 @@ function update(){
     sgSalArr.push(i<=sg.n ? sg.S*Math.pow(1+sg.d,i) : null);
     sgPArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
     veSalArr.push(i<=ve.n ? ve.S*Math.pow(1+ve.d,i) : null);
-    vePArr.push(i<=sg.n ? ve.P*Math.pow(1+ve.r,i)  : null);
+    vePArr.push(i<=ve.n ? ve.P*Math.pow(1+ve.r,i)  : null);
   }
 
   var isDark=getComputedStyle(document.documentElement).getPropertyValue('color-scheme').includes('dark');
