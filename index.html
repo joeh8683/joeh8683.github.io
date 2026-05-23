@@ -151,7 +151,7 @@ function update(){
   document.getElementById('ve-n-v').textContent=ve.n+' yrs';
 
   var sgPn=sg.P*Math.pow(1+sg.r,sg.n);
-  var sgSn=sg.S*Math.pow(1+sg.r,sg.n);
+  var sgSn=sg.S*Math.pow(1+sg.d,sg.n);
   var sgGap=sgSn-sgPn;
   document.getElementById('sg-pn').textContent=fmtDollar(sgPn);
   document.getElementById('sg-sn').textContent=fmtDollar(sgSn);
@@ -161,7 +161,7 @@ function update(){
   document.getElementById('sg-mult').textContent=(sgSn/sg.S).toFixed(2)+'×';
 
   var vePn=ve.P*Math.pow(1+ve.r,ve.n);
-  var veSn=ve.S*Math.pow(1+sg.r,sg.n);
+  var veSn=ve.S*Math.pow(1+ve.d,ve.n);
   var veGap=veSn-vePn;
   document.getElementById('ve-pn').textContent=fmtDollar(vePn);
   document.getElementById('ve-sn').textContent=fmtDollar(veSn);
@@ -176,11 +176,10 @@ function update(){
 
   var sgSalArr=[],sgPArr=[],veSalArr=[],vePArr=[];
   for(var i=0;i<=maxN;i++){
-    sgSalArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
+    sgSalArr.push(i<=sg.n ? sg.S*Math.pow(1+sg.d,i) : null);
     sgPArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
-    veSalArr.push(i<=ve.n ? ve.S+i*ve.d : null);
-    var rawVeP=ve.P*Math.pow(1+ve.r,i);
-    vePArr.push(i<=ve.n ? Math.log10(Math.max(1,rawVeP)) : null);
+    veSalArr.push(i<=ve.n ? ve.S*Math.pow(1+ve.d,i) : null);
+    vePArr.push(i<=sg.n ? ve.P*Math.pow(1+ve.r,i)  : null);
   }
 
   var isDark=getComputedStyle(document.documentElement).getPropertyValue('color-scheme').includes('dark');
