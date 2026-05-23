@@ -206,12 +206,7 @@ function update(){
         legend:{display:false},
         tooltip:{
           callbacks:{
-            label:function(c){
-              if(c.dataset.label==='VE price (log₁₀)'){
-                return 'VE price: $'+fmt(Math.pow(10,c.raw));
-              }
-              return c.dataset.label+': $'+fmt(c.raw);
-            }
+            label:{
           }
         }
       },
