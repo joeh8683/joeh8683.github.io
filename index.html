@@ -1,784 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meal Plan Creator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-/* ---------- GLOBAL ---------- */
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  background: #f4f6f8;
-  color: #333;
-  line-height: 1.6;
-}
+import React, { useState, useMemo } from 'react';
+import { Trophy, Layers, Info, AlertCircle, Plus, Trash2, Hash } from 'lucide-react';
 
-/* ---------- HERO SECTION ---------- */
-.hero {
-  text-align: center;
-  padding: 100px 20px 60px;
-  background: linear-gradient(135deg, #16a085, #2980b9);
-  color: white;
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
+const SUITS = ['♠', '♥', '♦', '♣'];
+const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
 
-.hero h1 {
-  font-size: 3em;
-  font-weight: 700;
-  margin-bottom: 0.3em;
-  text-shadow: 1px 1px 6px rgba(0,0,0,0.25);
-}
+export default function App() {
+  const [holeCards, setHoleCards] = useState([
+    { rank: 'A', suit: '♥' },
+    { rank: 'K', suit: '♥' }
+  ]);
+  const [board, setBoard] = useState([
+    { rank: '2', suit: '♥' },
+    { rank: '7', suit: '♥' },
+    { rank: 'T', suit: '♣' }
+  ]);
 
-.hero p {
-  font-size: 1.3em;
-  max-width: 700px;
-  margin: 0 auto 20px;
-  opacity: 0.95;
-}
-
-.hero button {
-  padding: 15px 35px;
-  font-size: 1.1em;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 5px 15px rgba(39,174,96,0.3);
-}
-
-.hero button:hover {
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(39,174,96,0.4);
-}
-
-/* ---------- FORM SECTION ---------- */
-.form-section {
-  max-width: 720px;
-  background: #ffffff;
-  margin: -60px auto 60px;
-  padding: 40px 30px;
-  border-radius: 20px;
-  box-shadow: 0 15px 45px rgba(0,0,0,0.08);
-  transition: 0.3s;
-}
-
-.form-section h2 {
-  margin-bottom: 20px;
-  font-size: 1.8em;
-  font-weight: 600;
-  color: #2980b9;
-  text-align: center;
-}
-
-.form-section input, 
-.form-section select {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 14px 16px;
-  margin: 10px 0;
-  border-radius: 12px;
-  border: 2px solid #eee;
-  font-size: 1em;
-  transition: 0.3s;
-  background: #fafafa;
-  height: 50px; /* forces same height */
-}
-
-.form-section select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-position: right 14px center;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548a.75.75 0 011.06-.032L10 10.623l3.424-3.107a.75.75 0 111.028 1.092l-4 3.628a.75.75 0 01-1.028 0l-4-3.628a.75.75 0 01-.032-1.06z'/></svg>");
-}
-
-.form-section input:focus, 
-.form-section select:focus {
-  border-color: #2980b9;
-  box-shadow: 0 0 12px rgba(41,128,185,0.25);
-  outline: none;
-  background: #fff;
-}
-
-.form-section button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 10px;
-  font-size: 1.1em;
-  font-weight: 700;
-  color: white;
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 5px 15px rgba(39,174,96,0.3);
-}
-
-.form-section button:hover {
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(39,174,96,0.4);
-}
-
-/* ---------- RESULTS & TABS ---------- */
-.results {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.tabs button {
-  padding: 12px 25px;
-  border-radius: 12px;
-  font-weight: 600;
-  background: #ecf0f1;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tabs button.active {
-  background: white;
-  color: #2980b9;
-  border: 2px solid;
-  border-image: linear-gradient(90deg, #16a085, #2980b9) 1;
-  box-shadow: 0 5px 15px rgba(41,128,185,0.15);
-}
-
-.tabs button:hover:not(.active) {
-  background: #dfe6e9;
-}
-
-/* ---------- MEAL PLANS ---------- */
-.meal-plan {
-  display: none;
-  margin-top: 20px;
-  animation: fadeIn 0.4s ease-in-out;
-}
-
-.meal-plan.active {
-  display: block;
-}
-
-.meal-box {
-  border: none;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #ffffff, #f8faff);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-  transition: 0.3s;
-  position: relative;
-}
-
-.meal-box::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  padding: 2px;
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.meal-box:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
-}
-
-.meal-box h4 {
-  color: #27ae60;
-  margin-bottom: 10px;
-}
-
-/* ---------- ANIMATIONS ---------- */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-  </style>
-</head>
-<body>
-  <section class="hero">
-    <h1>Your Personal Weight Journey</h1>
-    <p>Enter your weight and goals — we’ll build a full, one-week meal plan for you.</p>
-    <p>Contact us at dishdash@gmail.com to order!</p>
-  </section>
-
-  <section class="form-section">
-    <h2>Your Weight Journey Starts Here</h2>
-    <form id="mealForm">
-      <input type="number" id="currentWeight" placeholder="Current Weight (kg)" required />
-      <input type="number" id="goalWeight" placeholder="Goal Weight (kg)" required />
-      <input type="number" id="age" placeholder="Age (optional)" />
-      <input type="number" id="height" placeholder="Height (cm) (optional)" />
-      <input type="allergies" id="restrictions" name="restrictions" placeholder="Dietary Restrictions (optional)" />
-
-      <select id="gender">
-        <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-      <select id="activity">
-        <option value="">How active are you?</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-     <select id="plan">
-        <option value="">I want a...</option>
-        <option value="loss">Weight Loss Meal Plan</option>
-        <option value="muscle">Muscle Gain Meal Plan</option>
-        <option value="vegetarian">Vegetarian Meal Plan</option>
-        <option value="vegan">Vegan Meal Plan</option>
-        <option value="celiac">Gluten-Free Meal Plan</option>
-        <option value="heart">Heart-Healthy Meal Plan</option>
-      </select>
-      <button type="submit">Generate My Meal Plan!</button>
-    </form>
-  </section>
-
-  <section class="results" id="results" style="display:none">
-    <div class="tabs" id="tabs"></div>
-    <div id="plans"></div>
-  </section>
-
-  <script>
-    const form = document.getElementById("mealForm");
-    const results = document.getElementById("results");
-    const plansContainer = document.getElementById("plans");
-    const tabsContainer = document.getElementById("tabs");
-
-
-const mealPlans = {
-  loss: [
-    {
-      title: "Day 1",
-      meals: [
-        { title: "Breakfast", items: ["Greek yogurt", "Chia seeds", "Berries", "Granola"] },
-        { title: "Snack", items: ["Hard-boiled egg", "Cucumber slices"] },
-        { title: "Lunch", items: ["Grilled chicken salad", "Mixed greens", "Cherry tomatoes", "Avocado", "Balsamic dressing"] },
-        { title: "Dinner", items: ["Baked cod", "Roasted Brussels sprouts", "Quinoa"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1230 kcal", "Protein: ~99 g", "Fats: ~40 g"] }
-      ]
-    },
-    {
-      title: "Day 2",
-      meals: [
-        { title: "Breakfast", items: ["Veggie omelet", "Egg whites", "Spinach", "Mushrooms", "Feta"] },
-        { title: "Snack", items: ["Apple", "Almond butter"] },
-        { title: "Lunch", items: ["Turkey & hummus wrap", "Whole wheat tortilla", "Lettuce", "Cucumber"] },
-        { title: "Dinner", items: ["Stir-fried shrimp", "Zucchini noodles", "Garlic sauce"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1180 kcal", "Protein: ~94 g", "Fats: ~38 g"] }
-      ]
-    },
-    {
-      title: "Day 3",
-      meals: [
-        { title: "Breakfast", items: ["Overnight oats", "Almond milk", "Flaxseeds", "Banana"] },
-        { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
-        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
-        { title: "Dinner", items: ["Grilled chicken", "Roasted sweet potatoes", "Steamed broccoli"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~89 g", "Fats: ~35 g"] }
-      ]
-    },
-    {
-      title: "Day 4",
-      meals: [
-        { title: "Breakfast", items: ["Smoothie", "Spinach", "Protein powder", "Almond milk", "Frozen berries"] },
-        { title: "Snack", items: ["Walnuts", "Carrot sticks"] },
-        { title: "Lunch", items: ["Quinoa bowl", "Black beans", "Corn", "Avocado", "Lime dressing"] },
-        { title: "Dinner", items: ["Baked salmon", "Asparagus", "Wild rice"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~90 g", "Fats: ~48 g"] }
-      ]
-    },
-    {
-      title: "Day 5",
-      meals: [
-        { title: "Breakfast", items: ["Scrambled eggs", "Smoked salmon", "Whole-grain toast"] },
-        { title: "Snack", items: ["Greek yogurt", "Honey", "Walnuts"] },
-        { title: "Lunch", items: ["Grilled turkey burger", "Side salad"] },
-        { title: "Dinner", items: ["Cauliflower rice stir-fry", "Tofu", "Sesame oil"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~110 g", "Fats: ~45 g"] }
-      ]
-    },
-    {
-      title: "Day 6",
-      meals: [
-        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango"] },
-        { title: "Snack", items: ["Roasted chickpeas"] },
-        { title: "Lunch", items: ["Tuna salad", "Mixed greens", "Olives", "Boiled eggs", "Olive oil"] },
-        { title: "Dinner", items: ["Herb-roasted chicken", "Mashed cauliflower", "Green beans"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~98 g", "Fats: ~43 g"] }
-      ]
-    },
-    {
-      title: "Day 7",
-      meals: [
-        { title: "Breakfast", items: ["Protein pancakes", "Oat flour", "Banana", "Egg whites"] },
-        { title: "Snack", items: ["Celery sticks", "Peanut butter"] },
-        { title: "Lunch", items: ["Grilled shrimp skewers", "Quinoa tabbouleh"] },
-        { title: "Dinner", items: ["Lean beef stir-fry", "Bell peppers", "Brown rice"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~116 g", "Fats: ~47 g"] }
-      ]
+  // --- Probability Engine ---
+  const stats = useMemo(() => {
+    const allKnown = [...holeCards, ...board];
+    const seenStrings = allKnown.map(c => `${c.rank}${c.suit}`);
+    if (new Set(seenStrings).size !== seenStrings.length) {
+      return { error: "Duplicate cards detected in your selection." };
     }
-  ],
 
-  muscle: [
-    {
-      title: "Day 1",
-      meals: [
-        { title: "Breakfast", items: ["3-egg omelet", "Cheese", "Spinach", "Whole-grain toast"] },
-        { title: "Snack", items: ["Protein shake", "Banana", "Peanut butter", "Whey", "Milk"] },
-        { title: "Lunch", items: ["Grilled chicken breast", "Sweet potatoes", "Broccoli"] },
-        { title: "Dinner", items: ["Lean steak", "Mashed potatoes", "Sautéed mushrooms"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1900 kcal", "Protein: ~150 g", "Fats: ~65 g"] }
-      ]
-    },
-    {
-      title: "Day 2",
-      meals: [
-        { title: "Breakfast", items: ["Oatmeal", "Whey protein", "Almonds", "Honey"] },
-        { title: "Snack", items: ["Cottage cheese", "Blueberries"] },
-        { title: "Lunch", items: ["Beef & brown rice bowl", "Avocado"] },
-        { title: "Dinner", items: ["Baked salmon", "Quinoa", "Roasted carrots"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1700 kcal", "Protein: ~124 g", "Fats: ~56 g"] }
-      ]
-    },
-    {
-      title: "Day 3",
-      meals: [
-        { title: "Breakfast", items: ["Scrambled eggs", "Turkey sausage", "Whole-wheat toast"] },
-        { title: "Snack", items: ["Greek yogurt", "Granola"] },
-        { title: "Lunch", items: ["Grilled chicken wrap", "Whole wheat", "Hummus", "Veggies"] },
-        { title: "Dinner", items: ["Pork chops", "Roasted Brussels sprouts", "Wild rice"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1650 kcal", "Protein: ~120 g", "Fats: ~59 g"] }
-      ]
-    },
-    {
-      title: "Day 4",
-      meals: [
-        { title: "Breakfast", items: ["Protein smoothie", "Oats", "Peanut butter", "Banana", "Milk"] },
-        { title: "Snack", items: ["Hard-boiled eggs", "Almonds"] },
-        { title: "Lunch", items: ["Turkey chili", "Black beans", "Cornbread"] },
-        { title: "Dinner", items: ["Baked cod", "Garlic butter", "Roasted potatoes"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~129 g", "Fats: ~57 g"] }
-      ]
-    },
-    {
-      title: "Day 5",
-      meals: [
-        { title: "Breakfast", items: ["Pancakes", "Protein powder", "Eggs", "Banana", "Syrup"] },
-        { title: "Snack", items: ["Tuna salad", "Whole-grain crackers"] },
-        { title: "Lunch", items: ["Grilled shrimp", "Couscous", "Asparagus"] },
-        { title: "Dinner", items: ["Chicken thighs", "Roasted squash", "Quinoa"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1600 kcal", "Protein: ~132 g", "Fats: ~51 g"] }
-      ]
-    },
-    {
-      title: "Day 6",
-      meals: [
-        { title: "Breakfast", items: ["Breakfast burrito", "Scrambled eggs", "Cheese", "Turkey bacon", "Whole wheat tortilla"] },
-        { title: "Snack", items: ["Protein bar", "Banana"] },
-        { title: "Lunch", items: ["Beef stir-fry", "Noodles", "Mixed veggies"] },
-        { title: "Dinner", items: ["Baked chicken", "Mashed sweet potatoes", "Green beans"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~132 g", "Fats: ~51 g"] }
-      ]
-    },
-    {
-      title: "Day 7",
-      meals: [
-        { title: "Breakfast", items: ["Greek yogurt parfait", "Granola", "Berries", "Honey"] },
-        { title: "Snack", items: ["Peanut butter & jelly sandwich", "Whole grain"] },
-        { title: "Lunch", items: ["Grilled salmon", "Wild rice", "Steamed broccoli"] },
-        { title: "Dinner", items: ["Lean beef burger", "Whole wheat bun", "Sweet potato fries"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1750 kcal", "Protein: ~120 g", "Fats: ~62 g"] }
-      ]
-    }
-  ],
+    const n = 52 - allKnown.length; // Remaining unseen cards
 
-  vegetarian: [
-    {
-      title: "Day 1",
-      meals: [
-        { title: "Breakfast", items: ["Greek yogurt", "Honey", "Walnuts", "Berries"] },
-        { title: "Snack", items: ["Hummus", "Carrot sticks"] },
-        { title: "Lunch", items: ["Chickpea & spinach curry", "Brown rice"] },
-        { title: "Dinner", items: ["Stuffed bell peppers", "Quinoa", "Black beans", "Cheese"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~63 g", "Fats: ~43 g"] }
-      ]
-    },
-    {
-      title: "Day 2",
-      meals: [
-        { title: "Breakfast", items: ["Scrambled tofu", "Avocado toast"] },
-        { title: "Snack", items: ["Almonds", "Dried apricots"] },
-        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
-        { title: "Dinner", items: ["Veggie stir-fry", "Tofu", "Sesame seeds"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~71 g", "Fats: ~50 g"] }
-      ]
-    },
-    {
-      title: "Day 3",
-      meals: [
-        { title: "Breakfast", items: ["Oatmeal", "Chia seeds", "Almond butter", "Banana"] },
-        { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
-        { title: "Lunch", items: ["Falafel wrap", "Whole wheat", "Tahini", "Veggies"] },
-        { title: "Dinner", items: ["Eggplant Parmesan", "Side salad"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1500 kcal", "Protein: ~64 g", "Fats: ~46 g"] }
-      ]
-    },
-    {
-      title: "Day 4",
-      meals: [
-        { title: "Breakfast", items: ["Smoothie", "Spinach", "Banana", "Almond milk", "Flaxseeds"] },
-        { title: "Snack", items: ["Roasted edamame"] },
-        { title: "Lunch", items: ["Quinoa salad", "Cherry tomatoes", "Cucumber", "Feta"] },
-        { title: "Dinner", items: ["Mushroom risotto", "Peas"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~57 g", "Fats: ~40 g"] }
-      ]
-    },
-    {
-      title: "Day 5",
-      meals: [
-        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango"] },
-        { title: "Snack", items: ["Apple", "Peanut butter"] },
-        { title: "Lunch", items: ["Black bean tacos", "Corn tortillas", "Avocado", "Salsa"] },
-        { title: "Dinner", items: ["Spinach & ricotta stuffed shells"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~47 g", "Fats: ~54 g"] }
-      ]
-    },
-    {
-      title: "Day 6",
-      meals: [
-        { title: "Breakfast", items: ["Veggie omelet", "Mushrooms", "Peppers", "Cheese"] },
-        { title: "Snack", items: ["Trail mix", "Nuts", "Seeds", "Dark chocolate"] },
-        { title: "Lunch", items: ["Caprese salad", "Mozzarella", "Tomatoes", "Basil", "Balsamic"] },
-        { title: "Dinner", items: ["Sweet potato & black bean enchiladas"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~59 g", "Fats: ~56 g"] }
-      ]
-    },
-    {
-      title: "Day 7",
-      meals: [
-        { title: "Breakfast", items: ["Whole-grain toast", "Avocado", "Poached eggs"] },
-        { title: "Snack", items: ["Greek yogurt", "Granola"] },
-        { title: "Lunch", items: ["Chickpea salad sandwich", "Whole wheat bread"] },
-        { title: "Dinner", items: ["Butternut squash risotto", "Parmesan"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~60 g", "Fats: ~44 g"] }
-      ]
-    }
-  ],
-
-  vegan: [
-    {
-      title: "Day 1",
-      meals: [
-        { title: "Breakfast", items: ["Smoothie bowl", "Spinach", "Banana", "Almond butter", "Chia seeds", "Soy milk"] },
-        { title: "Snack", items: ["Roasted almonds"] },
-        { title: "Lunch", items: ["Buddha bowl", "Quinoa", "Roasted sweet potatoes", "Chickpeas", "Tahini dressing"] },
-        { title: "Dinner", items: ["Lentil Bolognese", "Whole-wheat pasta"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1570 kcal", "Protein: ~60 g", "Fats: ~57 g"] }
-      ]
-    },
-    {
-      title: "Day 2",
-      meals: [
-        { title: "Breakfast", items: ["Overnight oats", "Almond milk", "Flaxseeds", "Berries", "Maple syrup"] },
-        { title: "Snack", items: ["Apple slices", "Peanut butter"] },
-        { title: "Lunch", items: ["Chickpea salad wrap", "Whole wheat tortilla", "Avocado", "Greens"] },
-        { title: "Dinner", items: ["Coconut curry", "Tofu", "Spinach", "Brown rice"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1500 kcal", "Protein: ~52 g", "Fats: ~51 g"] }
-      ]
-    },
-    {
-      title: "Day 3",
-      meals: [
-        { title: "Breakfast", items: ["Tofu scramble", "Turmeric", "Black beans", "Avocado toast"] },
-        { title: "Snack", items: ["Dark chocolate", "Walnuts"] },
-        { title: "Lunch", items: ["Black bean & corn salad", "Lime dressing"] },
-        { title: "Dinner", items: ["Stuffed portobello mushrooms", "Quinoa", "Lentils", "Herbs"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~60 g", "Fats: ~52 g"] }
-      ]
-    },
-    {
-      title: "Day 4",
-      meals: [
-        { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Mango", "Hemp seeds"] },
-        { title: "Snack", items: ["Hummus", "Cucumber sticks", "Bell pepper sticks"] },
-        { title: "Lunch", items: ["Vegan sushi rolls", "Avocado", "Cucumber", "Carrot", "Brown rice"] },
-        { title: "Dinner", items: ["Spicy peanut tofu stir-fry", "Broccoli", "Rice noodles"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~45 g", "Fats: ~47 g"] }
-      ]
-    },
-    {
-      title: "Day 5",
-      meals: [
-        { title: "Breakfast", items: ["Vegan pancakes", "Banana", "Oat flour", "Almond milk", "Berries"] },
-        { title: "Snack", items: ["Roasted edamame"] },
-        { title: "Lunch", items: ["Lentil soup", "Whole-grain bread"] },
-        { title: "Dinner", items: ["Jackfruit tacos", "Corn tortillas", "Avocado", "Salsa"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1300 kcal", "Protein: ~51 g", "Fats: ~32 g"] }
-      ]
-    },
-    {
-      title: "Day 6",
-      meals: [
-        { title: "Breakfast", items: ["Granola", "Soy yogurt", "Mixed berries"] },
-        { title: "Snack", items: ["Trail mix", "Pumpkin seeds", "Dried cranberries", "Cacao nibs"] },
-        { title: "Lunch", items: ["Falafel plate", "Hummus", "Tabbouleh", "Pita"] },
-        { title: "Dinner", items: ["Eggplant & chickpea stew", "Couscous"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~53 g", "Fats: ~42 g"] }
-      ]
-    },
-    {
-      title: "Day 7",
-      meals: [
-        { title: "Breakfast", items: ["Avocado toast", "Whole-grain bread", "Cherry tomatoes"] },
-        { title: "Snack", items: ["Banana", "Almond butter"] },
-        { title: "Lunch", items: ["Vegan tuna salad", "Mashed chickpeas", "Celery", "Vegan mayo"] },
-        { title: "Dinner", items: ["Butternut squash risotto", "Coconut milk", "Nutritional yeast"] },
-        { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~40 g", "Fats: ~51 g"] }
-      ]
-    }
-  ],
-
-  celiac: [
-  {
-    title: "Day 1",
-    meals: [
-      { title: "Breakfast", items: ["Scrambled eggs", "Sautéed spinach", "Gluten-free toast"] },
-      { title: "Snack", items: ["Rice cakes", "Almond butter"] },
-      { title: "Lunch", items: ["Grilled chicken", "Quinoa", "Roasted veggies"] },
-      { title: "Dinner", items: ["Baked salmon", "Mashed cauliflower", "Green beans"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1480 kcal", "Protein: ~105 g", "Fats: ~58 g"] }
-    ]
-  },
-  {
-    title: "Day 2",
-    meals: [
-      { title: "Breakfast", items: ["Greek yogurt", "Gluten-free granola", "Berries"] },
-      { title: "Snack", items: ["Hard-boiled eggs", "Olives"] },
-      { title: "Lunch", items: ["Turkey lettuce wraps", "Ground turkey", "Avocado", "Salsa"] },
-      { title: "Dinner", items: ["Shrimp stir-fry", "Rice noodles", "Tamari sauce"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~103 g", "Fats: ~44 g"] }
-    ]
-  },
-  {
-    title: "Day 3",
-    meals: [
-      { title: "Breakfast", items: ["Smoothie", "Almond milk", "Banana", "Peanut butter", "Chia seeds"] },
-      { title: "Snack", items: ["Cheese slices", "Gluten-free crackers"] },
-      { title: "Lunch", items: ["Stuffed bell peppers", "Ground beef", "Rice", "Tomatoes"] },
-      { title: "Dinner", items: ["Grilled cod", "Roasted potatoes", "Asparagus"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~92 g", "Fats: ~53 g"] }
-    ]
-  },
-  {
-    title: "Day 4",
-    meals: [
-      { title: "Breakfast", items: ["Oatmeal (GF oats)", "Walnuts", "Honey"] },
-      { title: "Snack", items: ["Apple", "Sunflower seed butter"] },
-      { title: "Lunch", items: ["Quinoa salad", "Cucumber", "Cherry tomatoes", "Feta"] },
-      { title: "Dinner", items: ["Chicken fajitas", "Corn tortillas", "Peppers", "Onions"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~71 g", "Fats: ~47 g"] }
-    ]
-  },
-  {
-    title: "Day 5",
-    meals: [
-      { title: "Breakfast", items: ["Chia pudding", "Coconut milk", "Raspberries"] },
-      { title: "Snack", items: ["Roasted chickpeas"] },
-      { title: "Lunch", items: ["Tuna salad", "GF crackers", "Lettuce cups"] },
-      { title: "Dinner", items: ["Beef & broccoli stir-fry", "GF soy sauce"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1350 kcal", "Protein: ~91 g", "Fats: ~50 g"] }
-    ]
-  },
-  {
-    title: "Day 6",
-    meals: [
-      { title: "Breakfast", items: ["GF pancakes", "Almond flour", "Maple syrup"] },
-      { title: "Snack", items: ["Mixed nuts", "Dried fruit"] },
-      { title: "Lunch", items: ["Lentil soup", "GF bread"] },
-      { title: "Dinner", items: ["Herb-roasted chicken", "Sweet potato mash"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~78 g", "Fats: ~47 g"] }
-    ]
-  },
-  {
-    title: "Day 7",
-    meals: [
-      { title: "Breakfast", items: ["Veggie omelet", "Avocado"] },
-      { title: "Snack", items: ["Greek yogurt", "Honey"] },
-      { title: "Lunch", items: ["Grilled shrimp salad", "Mixed greens", "Olive oil dressing"] },
-      { title: "Dinner", items: ["Lamb chops", "Roasted carrots", "Quinoa"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1450 kcal", "Protein: ~105 g", "Fats: ~57 g"] }
-    ]
-  }
-],
-
-heart: [
-  {
-    title: "Day 1",
-    meals: [
-      { title: "Breakfast", items: ["Oatmeal", "Walnuts", "Flaxseeds", "Blueberries"] },
-      { title: "Snack", items: ["Sliced apple", "Almond butter"] },
-      { title: "Lunch", items: ["Grilled salmon", "Quinoa", "Steamed asparagus"] },
-      { title: "Dinner", items: ["Turkey chili (low-sodium)", "Avocado"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1480 kcal", "Protein: ~106 g", "Fats: ~59 g"] }
-    ]
-  },
-  {
-    title: "Day 2",
-    meals: [
-      { title: "Breakfast", items: ["Greek yogurt", "Chia seeds", "Strawberries"] },
-      { title: "Snack", items: ["Unsalted almonds"] },
-      { title: "Lunch", items: ["Spinach salad", "Grilled chicken", "Olive oil", "Lemon"] },
-      { title: "Dinner", items: ["Baked cod", "Roasted Brussels sprouts", "Wild rice"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1240 kcal", "Protein: ~89 g", "Fats: ~58 g"] }
-    ]
-  },
-  {
-    title: "Day 3",
-    meals: [
-      { title: "Breakfast", items: ["Avocado toast", "Whole-grain bread", "Cherry tomatoes"] },
-      { title: "Snack", items: ["Carrot sticks", "Hummus"] },
-      { title: "Lunch", items: ["Lentil soup", "Mixed greens"] },
-      { title: "Dinner", items: ["Grilled shrimp", "Zucchini noodles", "Pesto"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1220 kcal", "Protein: ~91 g", "Fats: ~51 g"] }
-    ]
-  },
-  {
-    title: "Day 4",
-    meals: [
-      { title: "Breakfast", items: ["Smoothie", "Kale", "Banana", "Almond milk", "Flaxseeds"] },
-      { title: "Snack", items: ["Cottage cheese", "Pineapple"] },
-      { title: "Lunch", items: ["Tuna salad", "Olive oil", "Lemon", "Greens"] },
-      { title: "Dinner", items: ["Baked chicken", "Roasted sweet potatoes", "Green beans"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1260 kcal", "Protein: ~93 g", "Fats: ~58 g"] }
-    ]
-  },
-  {
-    title: "Day 5",
-    meals: [
-      { title: "Breakfast", items: ["Scrambled eggs", "Sautéed mushrooms", "Whole-grain toast"] },
-      { title: "Snack", items: ["Walnuts", "Dark chocolate (70%+)"] },
-      { title: "Lunch", items: ["Quinoa bowl", "Black beans", "Avocado", "Lime"] },
-      { title: "Dinner", items: ["Grilled salmon", "Farro", "Steamed broccoli"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1400 kcal", "Protein: ~75 g", "Fats: ~59 g"] }
-    ]
-  },
-  {
-    title: "Day 6",
-    meals: [
-      { title: "Breakfast", items: ["Chia pudding", "Almond milk", "Raspberries"] },
-      { title: "Snack", items: ["Edamame with sea salt"] },
-      { title: "Lunch", items: ["Grilled turkey burger (no bun)", "Side salad"] },
-      { title: "Dinner", items: ["Stir-fried tofu", "Brown rice", "Veggies"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1220 kcal", "Protein: ~76 g", "Fats: ~50 g"] }
-    ]
-  },
-  {
-    title: "Day 7",
-    meals: [
-      { title: "Breakfast", items: ["Whole-grain toast", "Peanut butter", "Banana"] },
-      { title: "Snack", items: ["Greek yogurt", "Honey"] },
-      { title: "Lunch", items: ["Sardines on whole-grain crackers", "Cucumber"] },
-      { title: "Dinner", items: ["Herb-roasted chicken", "Mashed cauliflower", "Kale"] },
-      { title: "Nutritional Facts", items: ["Calories: ~1240 kcal", "Protein: ~79 g", "Fats: ~52 g"] }
-    ]
-  }
-]
-
-};
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  tabsContainer.innerHTML = "";
-  plansContainer.innerHTML = "";
-
-  const chosenPlan = document.getElementById("plan").value;
-  const days = mealPlans[chosenPlan];
-
-  if (!days) {
-    alert("Please select a meal plan.");
-    return;
-  }
-
-  days.forEach((day, i) => {
-    const tabBtn = document.createElement("button");
-    tabBtn.textContent = day.title;
-    if (i === 0) tabBtn.classList.add("active");
-    tabBtn.addEventListener("click", () => switchTab(i));
-    tabsContainer.appendChild(tabBtn);
-
-    const dayDiv = document.createElement("div");
-    dayDiv.classList.add("meal-plan");
-    if (i === 0) dayDiv.classList.add("active");
-
-    day.meals.forEach(meal => {
-      const box = document.createElement("div");
-      box.className = "meal-box";
-      box.innerHTML = `<h4>${meal.title}</h4><ul>${meal.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
-      dayDiv.appendChild(box);
+    // Helper: Count cards by rank and suit
+    const suitCounts = {};
+    const rankCounts = {};
+    const values = [];
+    allKnown.forEach(c => {
+      suitCounts[c.suit] = (suitCounts[c.suit] || 0) + 1;
+      rankCounts[c.rank] = (rankCounts[c.rank] || 0) + 1;
+      let v = RANKS.indexOf(c.rank) + 2;
+      values.push(v);
     });
 
-    plansContainer.appendChild(dayDiv);
-  });
+    const uniqueValues = [...new Set(values)].sort((a, b) => a - b);
 
-  results.style.display = "block";
-});
+    // 1. Flush Outs (9 if 4 of same suit)
+    const maxSuit = Math.max(...Object.values(suitCounts));
+    const flushOuts = maxSuit === 4 ? 9 : 0;
 
+    // 2. Straight Outs (Open ended: 8, Gutshot: 4)
+    let straightOuts = 0;
+    const checkStraight = (valArray) => {
+      let maxC = 0, currentC = 1;
+      for(let i=0; i<valArray.length-1; i++) {
+        if(valArray[i+1] === valArray[i] + 1) { currentC++; maxC = Math.max(maxC, currentC); }
+        else if(valArray[i+1] !== valArray[i]) { currentC = 1; }
+      }
+      return maxC >= 5;
+    };
 
-    function switchTab(index) {
-      [...tabsContainer.children].forEach((btn, i) => {
-        btn.classList.toggle("active", i === index);
-      });
-      [...plansContainer.children].forEach((div, i) => {
-        div.classList.toggle("active", i === index);
-      });
+    // Simple check for missing cards to complete a straight
+    for (let r = 2; r <= 14; r++) {
+      if (values.includes(r)) continue;
+      const test = [...uniqueValues, r].sort((a, b) => a - b);
+      if (checkStraight(test)) straightOuts += 4;
+      // Handle Ace-low
+      if (r === 14) {
+        const testLow = [...uniqueValues, 1].sort((a, b) => a - b);
+        if (checkStraight(testLow)) straightOuts += 4;
+      }
     }
-  </script>
-</body>
-</html>
+    // Cap straight outs at 8 for OESD (prevent double counting)
+    if (straightOuts > 8) straightOuts = 8;
 
+    // 3. Three of a Kind / Full House Outs
+    // If you have a pair, 2 cards of that rank remain
+    let setOuts = 0;
+    Object.values(rankCounts).forEach(count => {
+      if (count === 2) setOuts += 2;
+    });
 
+    const categories = [
+      { name: 'Flush', outs: flushOuts, color: 'text-blue-400' },
+      { name: 'Straight', outs: straightOuts, color: 'text-emerald-400' },
+      { name: 'Three of a Kind', outs: setOuts, color: 'text-purple-400' },
+      { name: 'Full House', outs: (setOuts > 0 && board.length >= 3) ? 4 : 0, color: 'text-orange-400' }
+    ];
 
+    const calcProb = (outs) => {
+      if (outs <= 0) return { turn: 0, river: 0 };
+      const turn = (outs / n) * 100;
+      // Probability by river: 1 - ( (non-outs/n) * (non-outs-1/n-1) )
+      const nonOuts = n - outs;
+      const river = (1 - (nonOuts / n) * (nonOuts - 1) / (n - 1)) * 100;
+      return { turn, river };
+    };
 
+    return { categories, n, calcProb, error: null };
+  }, [holeCards, board]);
 
+  const updateCard = (type, index, field, value) => {
+    if (type === 'hole') {
+      const next = [...holeCards];
+      next[index][field] = value;
+      setHoleCards(next);
+    } else {
+      const next = [...board];
+      next[index][field] = value;
+      setBoard(next);
+    }
+  };
 
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 font-sans">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-black flex items-center gap-2">
+              <Layers className="text-blue-500" /> PROBABILITY ENGINE
+            </h1>
+            <p className="text-slate-500 text-sm">Combinatorial analysis of remaining cards</p>
+          </div>
+          <div className="flex gap-2">
+            <div className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl text-center">
+              <p className="text-[10px] text-slate-500 font-bold uppercase">Unseen</p>
+              <p className="text-xl font-black text-blue-400">{stats.error ? '--' : stats.n}</p>
+            </div>
+          </div>
+        </header>
 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Inputs Column */}
+          <div className="lg:col-span-4 space-y-8">
+            <section>
+              <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <Hash size={14}/> Hole Cards
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                {holeCards.map((c, i) => (
+                  <CardPicker key={i} card={c} onChange={(f, v) => updateCard('hole', i, f, v)} />
+                ))}
+              </div>
+            </section>
 
+            <section>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                  <Layers size={14}/> Community Board
+                </h2>
+                {board.length < 5 && (
+                  <button 
+                    onClick={() => setBoard([...board, { rank: '2', suit: '♠' }])}
+                    className="text-[10px] bg-blue-600 hover:bg-blue-500 px-2 py-1 rounded font-bold transition-colors"
+                  >
+                    + ADD
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {board.map((c, i) => (
+                  <div key={i} className="relative group">
+                    <CardPicker card={c} onChange={(f, v) => updateCard('board', i, f, v)} />
+                    {board.length > 3 && (
+                      <button 
+                        onClick={() => setBoard(board.filter((_, idx) => idx !== i))}
+                        className="absolute -top-1 -right-1 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Trash2 size={10} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
 
+          {/* Calculations Column */}
+          <div className="lg:col-span-8">
+            {stats.error ? (
+              <div className="bg-red-500/10 border border-red-500/50 p-8 rounded-3xl text-red-400 flex flex-col items-center justify-center gap-4 h-full">
+                <AlertCircle size={48} />
+                <p className="font-bold text-xl">{stats.error}</p>
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {stats.categories.map((cat, i) => {
+                  const p = stats.calcProb(cat.outs);
+                  return (
+                    <div key={i} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 transition-all hover:border-slate-700">
+                      <div className="flex justify-between items-start mb-6">
+                        <div>
+                          <h3 className={`text-xl font-black ${cat.color}`}>{cat.name}</h3>
+                          <p className="text-slate-500 text-xs font-bold uppercase">{cat.outs} Outs Available</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-slate-500 text-[10px] font-bold uppercase mb-1">By River</p>
+                          <div className="text-3xl font-black text-white">{p.river.toFixed(1)}%</div>
+                        </div>
+                      </div>
 
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase mb-2">
+                            <span>Probability on Turn</span>
+                            <span>{p.turn.toFixed(1)}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-500" style={{ width: `${p.turn}%` }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
 
+        <footer className="mt-12 p-6 bg-slate-900/50 rounded-2xl border border-slate-800 flex gap-4">
+          <Info className="text-slate-500 shrink-0" />
+          <div className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-wider space-y-2">
+            <p><strong>Turn Equation:</strong> Outs / {stats.n}</p>
+            <p><strong>River Equation:</strong> 1 - (({stats.n} - Outs) / {stats.n} * ({stats.n} - Outs - 1) / ({stats.n} - 1))</p>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}
 
-
-
-
-
-
-
-
-
-
+function CardPicker({ card, onChange }) {
+  return (
+    <div className="flex flex-col gap-2 bg-slate-900 p-3 rounded-2xl border border-slate-800">
+      <select 
+        value={card.rank} 
+        onChange={(e) => onChange('rank', e.target.value)}
+        className="bg-slate-800 text-white font-black rounded-lg p-2 text-sm appearance-none text-center cursor-pointer"
+      >
+        {RANKS.map(r => <option key={r} value={r}>{r}</option>)}
+      </select>
+      <select 
+        value={card.suit} 
+        onChange={(e) => onChange('suit', e.target.value)}
+        className={`bg-slate-800 text-xl rounded-lg p-2 appearance-none text-center cursor-pointer ${['♥', '♦'].includes(card.suit) ? 'text-red-500' : 'text-slate-300'}`}
+      >
+        {SUITS.map(s => <option key={s} value={s}>{s}</option>)}
+      </select>
+    </div>
+  );
+}
