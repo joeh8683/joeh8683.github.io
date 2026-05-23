@@ -1,4 +1,4 @@
-<h2 class="sr-only">Interactive model comparing salary growth against inflation using arithmetic and compound growth formulas</h2>
+<h2 class="sr-only">Interactive model comparing salary growth against inflation using arithmetic and compound growth formulas (All values in SGD)</h2>
 <style>
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -53,11 +53,11 @@
         <span class="card-flag">🇸🇬</span>
         <div><div class="card-title">Singapore</div><div class="card-sub">Moderate inflation</div></div>
       </div>
-      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="sg-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="sg-P-v">$1,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="sg-r" min="1" max="20" step="0.1" value="5"><span class="ctrl-val" id="sg-r-v">5%</span></div>
-      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="sg-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="sg-S-v">$4,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="sg-d" min="1" max="20" step="0.1" value="5"><span class="ctrl-val" id="sg-d-v">5%</span></div>
-      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="sg-n" min="1" max="30" step="1" value="10"><span class="ctrl-val" id="sg-n-v">10 yrs</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="sg-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="sg-P-v">$500</span></div>
+      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="sg-r" min="1" max="20" step="0.1" value="5"><span class="ctrl-val" id="sg-r-v">1%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="sg-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="sg-S-v">$1,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="sg-d" min="1" max="20" step="0.1" value="5"><span class="ctrl-val" id="sg-d-v">1%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="sg-n" min="1" max="10" step="1" value="10"><span class="ctrl-val" id="sg-n-v">1 yr</span></div>
       <div class="results">
         <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="sg-pn">$1,629</span></div>
         <div class="res-row"><span class="res-label">Salary after n years (S<sub>n</sub>)</span><span class="res-val" id="sg-sn">$6,700</span></div>
@@ -70,11 +70,11 @@
         <span class="card-flag">🇻🇪</span>
         <div><div class="card-title">Venezuela</div><div class="card-sub">Hyperinflation scenario</div></div>
       </div>
-      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="ve-P" min="100" max="1000" step="1" value="500"><span class="ctrl-val" id="ve-P-v">$1,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="ve-r" min="100" max="80000" step="100" value="80000"><span class="ctrl-val" id="ve-r-v">80,000%</span></div>
-      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="ve-S" min="20" max="200" step="1" value="40"><span class="ctrl-val" id="ve-S-v">$100</span></div>
-      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="ve-d" min="50" max="200" step="1" value="100"><span class="ctrl-val" id="ve-d-v">100%</span></div>
-      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="ve-n" min="1" max="10" step="1" value="3"><span class="ctrl-val" id="ve-n-v">3 yrs</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="ve-P" min="100" max="1000" step="1" value="500"><span class="ctrl-val" id="ve-P-v">$100</span></div>
+      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="ve-r" min="100" max="80000" step="100" value="80000"><span class="ctrl-val" id="ve-r-v">100%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="ve-S" min="20" max="200" step="1" value="40"><span class="ctrl-val" id="ve-S-v">$120</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="ve-d" min="50" max="200" step="1" value="100"><span class="ctrl-val" id="ve-d-v">50%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="ve-n" min="1" max="10" step="1" value="3"><span class="ctrl-val" id="ve-n-v">1 yr</span></div>
       <div class="results">
         <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="ve-pn">—</span></div>
         <div class="res-row"><span class="res-label">Salary after n years (S<sub>n</sub>)</span><span class="res-val" id="ve-sn">—</span></div>
