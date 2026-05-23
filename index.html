@@ -45,7 +45,7 @@
 
   <div class="formula-row">
     <div class="formula-pill">Price growth &nbsp; P<sub>n</sub> = P(1 + r)<sup>n</sup></div>
-    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S + (n − 1)d</div>
+    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S (1 + r)d</div>
   </div>
 
   <div class="cols">
@@ -57,7 +57,7 @@
       <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="sg-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="sg-P-v">$1,000</span></div>
       <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="sg-r" min="1" max="20" step="0.5" value="5"><span class="ctrl-val" id="sg-r-v">5%</span></div>
       <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="sg-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="sg-S-v">$4,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Annual raise d ($)</span><input type="range" id="sg-d" min="0" max="2000" step="50" value="300"><span class="ctrl-val" id="sg-d-v">$300</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="sg-d" min="1" max="20" step="0.5" value="5"><span class="ctrl-val" id="sg-d-v">5%</span></div>
       <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="sg-n" min="1" max="30" step="1" value="10"><span class="ctrl-val" id="sg-n-v">10 yrs</span></div>
       <div class="results">
         <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="sg-pn">$1,629</span></div>
