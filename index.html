@@ -44,7 +44,7 @@
 
   <div class="formula-row">
     <div class="formula-pill">Price growth &nbsp; P<sub>n</sub> = P(1 + r)<sup>n</sup></div>
-    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S + (n − 1)d</div>
+    <div class="formula-pill">Salary growth &nbsp; S<sub>n</sub> = S (1 + r)d</div>
   </div>
 
   <div class="cols">
@@ -56,7 +56,7 @@
       <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="sg-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="sg-P-v">$1,000</span></div>
       <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="sg-r" min="1" max="20" step="0.5" value="5"><span class="ctrl-val" id="sg-r-v">5%</span></div>
       <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="sg-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="sg-S-v">$4,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Annual raise d ($)</span><input type="range" id="sg-d" min="0" max="2000" step="50" value="300"><span class="ctrl-val" id="sg-d-v">$300</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="sg-d" min="1" max="20" step="0.5" value="5"><span class="ctrl-val" id="sg-d-v">9218</span></div>
       <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="sg-n" min="1" max="30" step="1" value="10"><span class="ctrl-val" id="sg-n-v">10 yrs</span></div>
       <div class="results">
         <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="sg-pn">$1,629</span></div>
@@ -71,9 +71,9 @@
         <div><div class="card-title">Venezuela</div><div class="card-sub">Hyperinflation scenario</div></div>
       </div>
       <div class="ctrl"><span class="ctrl-label">Starting price P ($)</span><input type="range" id="ve-P" min="500" max="10000" step="100" value="1000"><span class="ctrl-val" id="ve-P-v">$1,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="ve-r" min="100" max="500000" step="1000" value="100000"><span class="ctrl-val" id="ve-r-v">100,000%</span></div>
+      <div class="ctrl"><span class="ctrl-label">Inflation rate r (%)</span><input type="range" id="ve-r" min="100" max="100000" step="500" value="100000"><span class="ctrl-val" id="ve-r-v">100,000%</span></div>
       <div class="ctrl"><span class="ctrl-label">Starting salary S ($)</span><input type="range" id="ve-S" min="1000" max="15000" step="100" value="4000"><span class="ctrl-val" id="ve-S-v">$4,000</span></div>
-      <div class="ctrl"><span class="ctrl-label">Annual raise d ($)</span><input type="range" id="ve-d" min="0" max="50000" step="500" value="5000"><span class="ctrl-val" id="ve-d-v">$5,000</span></div>
+      <div class="ctrl"><span class="ctrl-label">Annual raise d (%)</span><input type="range" id="ve-d" min="50" max="200" step="1" value="100"><span class="ctrl-val" id="ve-d-v">100%</span></div>
       <div class="ctrl"><span class="ctrl-label">Years n</span><input type="range" id="ve-n" min="1" max="10" step="1" value="3"><span class="ctrl-val" id="ve-n-v">3 yrs</span></div>
       <div class="results">
         <div class="res-row"><span class="res-label">Price after n years (P<sub>n</sub>)</span><span class="res-val" id="ve-pn">—</span></div>
@@ -151,7 +151,7 @@ function update(){
   document.getElementById('ve-n-v').textContent=ve.n+' yrs';
 
   var sgPn=sg.P*Math.pow(1+sg.r,sg.n);
-  var sgSn=sg.S+(sg.n-1)*sg.d;
+  var sgSn=sg.S*Math.pow(1+sg.r,sg.n);
   var sgGap=sgSn-sgPn;
   document.getElementById('sg-pn').textContent=fmtDollar(sgPn);
   document.getElementById('sg-sn').textContent=fmtDollar(sgSn);
@@ -161,7 +161,7 @@ function update(){
   document.getElementById('sg-mult').textContent=(sgSn/sg.S).toFixed(2)+'×';
 
   var vePn=ve.P*Math.pow(1+ve.r,ve.n);
-  var veSn=ve.S+(ve.n-1)*ve.d;
+  var veSn=ve.S*Math.pow(1+sg.r,sg.n);
   var veGap=veSn-vePn;
   document.getElementById('ve-pn').textContent=fmtDollar(vePn);
   document.getElementById('ve-sn').textContent=fmtDollar(veSn);
@@ -176,7 +176,7 @@ function update(){
 
   var sgSalArr=[],sgPArr=[],veSalArr=[],vePArr=[];
   for(var i=0;i<=maxN;i++){
-    sgSalArr.push(i<=sg.n ? sg.S+i*sg.d : null);
+    sgSalArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
     sgPArr.push(i<=sg.n ? sg.P*Math.pow(1+sg.r,i) : null);
     veSalArr.push(i<=ve.n ? ve.S+i*ve.d : null);
     var rawVeP=ve.P*Math.pow(1+ve.r,i);
